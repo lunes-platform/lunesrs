@@ -1,11 +1,21 @@
 [package]
 name = "lunes-wasm"
-version = "0.1.0"
-edition = "2021"
-description = "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet."
-authors = ["Lunes Platform <development@lunes.io>"]
-license = "Apache-2.0"
 readme = "README.md"
+edition = "2021"
+version = "0.1.0"
+license = "Apache-2.0"
+authors = ["Lunes Platform <development@lunes.io>"]
 keywords = ["cryptocurrency","lunes","blockchain"]
+description = "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet."
 
 [dependencies]
+wasm-bindgen = "0.2.78"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false
+
+[profile.release]
+lto = true
+
+[lib]
+crate-type = ["cdylib"]
