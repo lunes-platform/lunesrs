@@ -1,5 +1,5 @@
 [package]
-name = "lunes-wasm"
+name = "lunes_wasm"
 readme = "README.md"
 edition = "2021"
 version = "0.1.0"
