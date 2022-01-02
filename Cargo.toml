@@ -6,6 +6,7 @@ version = "0.1.0"
 license = "Apache-2.0"
 authors = ["Lunes Platform <development@lunes.io>"]
 keywords = ["cryptocurrency","lunes","blockchain"]
+repository = "https://github.com/lunes-platform/lunes-wasm"
 description = "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet."
 
 [dependencies]
