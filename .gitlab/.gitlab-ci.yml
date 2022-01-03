@@ -1,0 +1,20 @@
+image: registry.lunes.io/blockchain/production/sdk/lunes_wasm
+
+stages:
+    - test
+
+CreateReportTests:
+    stage: test
+    script:
+        - cargo test
+    # artifacts:
+    #     when: always
+    #     reports:
+    #         junit: report.xml
+
+# DeployPackage:
+#     stage: deploy
+#     script:
+#         - wasm-pack build --target nodejs
+#         - wasm-pack login -u $USR_NPM -p $PWD_NPM
+#         - wasm-pack publish
