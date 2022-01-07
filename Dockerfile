@@ -1,6 +1,8 @@
 FROM rust
 
-RUN apt-get update -y 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install nodejs -y
-RUN cargo install wasm-pack
+RUN apt-get update -y && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt-get install nodejs -y && \
+    cargo install wasm-pack && \
+    rustup target add wasm32-unknown-unknown && \
+    rustup component add rustfmt

@@ -12,7 +12,7 @@
 	"extensions": [
 		"dustypomerleau.rust-syntax",
 		"eamodio.gitlens",
-		"rust-lang.rust",
+		"matklad.rust-analyzer",
 		"dtsvet.vscode-wasm",
 		"bungcip.better-toml",
 		"johnpapa.vscode-peacock"
