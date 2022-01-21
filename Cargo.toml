@@ -1,5 +1,5 @@
 [package]
-name = "lunes_wasm"
+name = "lunescrab"
 readme = "README.md"
 edition = "2021"
 version = "0.1.0"
@@ -11,6 +11,8 @@ description = "Library for communication with nodes in mainnet or testnet of the
 
 [dependencies]
 wasm-bindgen = "0.2.78"
+cargo-edit = "0.8.0"
+cargo-watch = "8.1.1"
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false
