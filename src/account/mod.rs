@@ -22,6 +22,12 @@ pub fn to_sha256_then_hex(raw_hash_seed: Vec<u8>) -> String {
 }
 
 
+#[wasm_bindgen]
+pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
+    "hash_seed".to_string()
+}
+
+
 #[cfg(test)]
 mod test {
     use super::*;
