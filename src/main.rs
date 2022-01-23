@@ -1,3 +1,3 @@
 fn main() {
-    println!("Lunes Crab\n🦀 ✅")
+    println!("\nLunes Crab ✅\n");
 }
