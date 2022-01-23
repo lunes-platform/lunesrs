@@ -16,7 +16,8 @@
 		"dtsvet.vscode-wasm",
 		"bungcip.better-toml",
 		"johnpapa.vscode-peacock",
-		"serayuzgur.crates"
+		"serayuzgur.crates",
+		"vadimcn.vscode-lldb"
 	]
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

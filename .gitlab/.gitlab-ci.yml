@@ -2,6 +2,7 @@ image: rust
 
 stages:
     - test
+    - build
 
 CreateReportTests:
     stage: test
@@ -12,9 +13,22 @@ CreateReportTests:
     #     reports:
     #         junit: report.xml
 
+BuildPackage:
+    stage: build
+    script:
+        - cargo install wasm-pack
+        - wasm-pack build --target nodejs
+    artifacts:
+        name: "lunescrab wasm" 
+        expose_as: "pre-release"
+        when: always
+        paths:
+            - pkg/
+
 # DeployPackage:
 #     stage: deploy
 #     script:
-#         - wasm-pack build --target nodejs
+#         - cargo install wasm-pack
 #         - wasm-pack login -u $USR_NPM -p $PWD_NPM
+#         - wasm-pack build --target nodejs
 #         - wasm-pack publish
