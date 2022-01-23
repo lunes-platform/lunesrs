@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, Rust 🦀")
+    println!("Lunes Crab\n🦀 ✅")
 }

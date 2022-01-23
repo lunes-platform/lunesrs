@@ -11,14 +11,16 @@ description = "Library for communication with nodes in mainnet or testnet of the
 
 [dependencies]
 wasm-bindgen = "0.2.78"
-cargo-edit = "0.8.0"
-cargo-watch = "8.1.1"
+hex = "0.4.3"
+blake2 = "0.10.2"
+tiny-keccak = { version = "2.0.0", features = ["keccak"] }
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false
 
 [profile.release]
+opt-level = "s"
 lto = true
 
 [lib]
-crate-type = ["cdylib", "lib"]
+crate-type = ["cdylib", "rlib"]
