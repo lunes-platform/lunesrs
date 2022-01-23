@@ -111,4 +111,45 @@ mod test {
             assert_eq!(output, "b0844296190762a600795411a184cc3a13049ea11acd3fc6e6abdac7c7d91a66");
         }
     }
+
+
+    mod private_key {
+
+        use super::{to_private_key_hex, from_str_hex};
+
+        #[test]
+        fn test_generate_private_key_for_0_nonce() {
+            let hash_seed = from_str_hex("a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string());
+            let output = to_private_key_hex(hash_seed);
+            assert_eq!(output, "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460");
+        }
+
+        #[test]
+        fn test_generate_private_key_for_1_nonce() {
+            let hash_seed = from_str_hex("9ec39e2bebaf5171478e8675e2f78cbd0956c1363b28643bd5ab087197f42b74".to_string());
+            let output = to_private_key_hex(hash_seed);
+            assert_eq!(output, "98c39e2bebaf5171478e8675e2f78cbd0956c1363b28643bd5ab087197f42b74");
+        }
+
+        #[test]
+        fn test_generate_private_key_for_2_nonce() {
+            let hash_seed = from_str_hex("3287a10f344eeab1ea6543c044ae687c1c9c17215176d2ff7f7f3b1894d7198d".to_string());
+            let output = to_private_key_hex(hash_seed);
+            assert_eq!(output, "3087a10f344eeab1ea6543c044ae687c1c9c17215176d2ff7f7f3b1894d7194d");
+        }
+
+        #[test]
+        fn test_generate_private_key_for_3_nonce() {
+            let hash_seed = from_str_hex("44bcf98e997b77bb868b8ee090e960db764f03b3ac91bfbdebcde877b0374cc5".to_string());
+            let output = to_private_key_hex(hash_seed);
+            assert_eq!(output, "40bcf98e997b77bb868b8ee090e960db764f03b3ac91bfbdebcde877b0374c45");
+        }
+
+        #[test]
+        fn test_generate_private_key_for_4_nonce() {
+            let hash_seed = from_str_hex("b0844296190762a600795411a184cc3a13049ea11acd3fc6e6abdac7c7d91a66".to_string());
+            let output = to_private_key_hex(hash_seed);
+            assert_eq!(output, "b0844296190762a600795411a184cc3a13049ea11acd3fc6e6abdac7c7d91a66");
+        }
+    }
 }
