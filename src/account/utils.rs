@@ -2,6 +2,11 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use hex::{encode, decode};
 
 
+#[wasm_bindgen]
+pub fn int_to_hex(int: u32) -> String {
+    hex::encode(int.to_be_bytes())
+}
+
 
 #[wasm_bindgen]
 pub fn vec_to_hex(vec: Vec<u8>) -> String {
@@ -74,4 +79,27 @@ mod test {
         assert_eq!(output, result);
     }
 
+
+    #[test]
+    fn test_min_to_hex() {
+        let output = int_to_hex(0u32);
+
+        assert_eq!(output, "00000000");
+    }
+
+
+    #[test]
+    fn test_random_to_hex() {
+        let output = int_to_hex(86587u32);
+
+        assert_eq!(output, "0001523b");
+    }
+
+
+    #[test]
+    fn test_max_to_hex() {
+        let output = int_to_hex(4_294_967_295u32);
+
+        assert_eq!(output, "ffffffff");
+    }
 }
