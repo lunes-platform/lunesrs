@@ -158,4 +158,45 @@ mod test {
             assert_eq!(output, "b0844296190762a600795411a184cc3a13049ea11acd3fc6e6abdac7c7d91a66");
         }
     }
+
+
+    mod address_mainnet {
+        use super::*;
+
+
+        #[test]
+        fn test_generate_mainnet_version_1_address_for_0_nonce() {
+            let pubk = from_str_hex("1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575".to_string());
+            let output = to_address_hex(pubk, '1', '1');
+            assert_eq!(output, "01312c2e5258dc5bccbb5c535944270f73b98f9739266329c8c0");
+        }
+
+        #[test]
+        fn test_generate_mainnet_version_1_address_for_1_nonce() {
+            let pubk = from_str_hex("8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f".to_string());
+            let output = to_address_hex(pubk, '1', '1');
+            assert_eq!(output, "0131640f230f396c4cf3f6ce7a6156387d52929902bff77423d8");
+        }
+
+        #[test]
+        fn test_generate_mainnet_version_1_address_for_2_nonce() {
+            let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
+            let output = to_address_hex(pubk, '1', '1');
+            assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
+        }
+
+        #[test]
+        fn test_generate_mainnet_version_1_address_for_3_nonce() {
+            let pubk = from_str_hex("18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873".to_string());
+            let output = to_address_hex(pubk, '1', '1');
+            assert_eq!(output, "0131842e3a128fd462b51805798d36909dac78ff9d43abb4d3b3");
+        }
+
+        #[test]
+        fn test_generate_mainnet_version_1_address_for_4_nonce() {
+            let pubk = from_str_hex("c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138".to_string());
+            let output = to_address_hex(pubk, '1', '1');
+            assert_eq!(output, "01317d211450834bfc6e0024549218833debf377968a4eca4b2d");
+        }
+    }
 }
