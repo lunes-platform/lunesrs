@@ -13,12 +13,12 @@ CreateReportTests:
     #     reports:
     #         junit: report.xml
 
-TestNodeJsWebAssembly:
-    before_script:
-        - cargo install wasm-pack
-    stage: test
-    script:
-        - wasm-pack test --node
+# TestNodeJsWebAssembly:
+#     before_script:
+#         - cargo install wasm-pack
+#     stage: test
+#     script:
+#         - wasm-pack test --node
 
 BuildPackage:
     before_script:
