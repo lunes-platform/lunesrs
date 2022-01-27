@@ -10,12 +10,12 @@ repository = "https://github.com/lunes-platform/lunes-wasm"
 description = "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet."
 
 [dependencies]
-wasm-bindgen = "0.2.78"
-hex = "0.4.3"
-blake2 = "0.10.2"
 tiny-keccak = { version = "2.0.0", features = ["keccak"] }
-sha2 = "0.10.1"
 wasm-bindgen-test = "0.3.29"
+wasm-bindgen = "0.2.78"
+blake2 = "0.10.2"
+sha2 = "0.10.1"
+hex = "0.4.3"
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false
