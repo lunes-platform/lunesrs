@@ -62,8 +62,10 @@ pub fn keccak256(data: Vec<u8>) -> String {
 #[cfg(test)]
 mod test {
     use super::*;
+    use wasm_bindgen_test::wasm_bindgen_test;
 
     #[test]
+    #[wasm_bindgen_test]
     fn test_blake2b_with_digest_size_of_32bytes() {
         let input = "lunes".to_string().as_bytes().to_vec();
         let result = "03173186d19ccff93e5c80266af36e289e0dfac4ccd7fd5e604212650535d4e3";
@@ -72,6 +74,7 @@ mod test {
     }
 
     #[test]
+    #[wasm_bindgen_test]
     fn test_keccak_with_digest_size_of_256bytes() {
         let input = "lunes".to_string().as_bytes().to_vec();
         let result = "92fbe255b883caae16d70fa91e473c7f516d7c994ca560b45575b4230e7350d7";
@@ -81,6 +84,7 @@ mod test {
 
 
     #[test]
+    #[wasm_bindgen_test]
     fn test_min_to_hex() {
         let output = int_to_hex(0u32);
 
@@ -89,6 +93,7 @@ mod test {
 
 
     #[test]
+    #[wasm_bindgen_test]
     fn test_random_to_hex() {
         let output = int_to_hex(86587u32);
 
@@ -97,6 +102,7 @@ mod test {
 
 
     #[test]
+    #[wasm_bindgen_test]
     fn test_max_to_hex() {
         let output = int_to_hex(4_294_967_295u32);
 

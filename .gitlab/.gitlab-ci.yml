@@ -13,10 +13,18 @@ CreateReportTests:
     #     reports:
     #         junit: report.xml
 
+TestNodeJsWebAssembly:
+    before_script:
+        - cargo install wasm-pack
+    stage: test
+    script:
+        - wasm-pack test --node
+
 BuildPackage:
+    before_script:
+        - cargo install wasm-pack
     stage: build
     script:
-        - cargo install wasm-pack
         - wasm-pack build --target nodejs
     artifacts:
         name: "lunescrab wasm" 
@@ -26,6 +34,8 @@ BuildPackage:
             - pkg/
 
 # DeployPackage:
+#     before_script:
+#         - cargo install wasm-pack
 #     stage: deploy
 #     script:
 #         - cargo install wasm-pack
