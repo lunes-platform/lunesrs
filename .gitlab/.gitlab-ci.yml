@@ -18,14 +18,14 @@ TestNodeJsWebAssembly:
         - cargo install wasm-pack
     stage: test
     script:
-        - wasm-pack test --node
+        - cargo/bin/wasm-pack test --node
 
 BuildPackage:
     before_script:
         - cargo install wasm-pack
     stage: build
     script:
-        - wasm-pack build --target nodejs
+        - cargo/bin/wasm-pack build --target nodejs
     artifacts:
         name: "lunescrab wasm" 
         expose_as: "pre-release"
