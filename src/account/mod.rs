@@ -28,6 +28,13 @@ pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
 }
 
 
+
+#[wasm_bindgen]
+pub fn generate_public_key(private_key: Vec<u8>) -> String {
+    "generate_public_key".to_string()
+}
+
+
 #[wasm_bindgen]
 pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
     use blake2::{Blake2bVar, digest::{Update, VariableOutput}};
@@ -202,6 +209,46 @@ mod test {
             let output = to_private_key_hex(hash_seed);
             assert_eq!(output, "b0844296190762a600795411a184cc3a13049ea11acd3fc6e6abdac7c7d91a66");
         }
+    }
+
+
+    mod publick_key {
+        use super::*;
+
+        #[test]
+        fn test_generate_public_key_for_0_nonce() {
+            let prvk = from_str_hex("a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string());
+            let output = generate_public_key(prvk);
+            assert_eq!(output, "1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575");
+        }
+
+        #[test]
+        fn test_generate_public_key_for_1_nonce() {
+            let prvk = from_str_hex("98c39e2bebaf5171478e8675e2f78cbd0956c1363b28643bd5ab087197f42b74".to_string());
+            let output = generate_public_key(prvk);
+            assert_eq!(output, "8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f");
+        }
+
+        #[test]
+        fn test_generate_public_key_for_2_nonce() {
+            let prvk = from_str_hex("3087a10f344eeab1ea6543c044ae687c1c9c17215176d2ff7f7f3b1894d7194d".to_string());
+            let output = generate_public_key(prvk);
+            assert_eq!(output, "538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666");
+        }
+
+        #[test]
+        fn test_generate_public_key_for_3_nonce() {
+            let prvk = from_str_hex("40bcf98e997b77bb868b8ee090e960db764f03b3ac91bfbdebcde877b0374c45".to_string());
+            let output = generate_public_key(prvk);
+            assert_eq!(output, "18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873");
+        }
+
+        #[test]
+        fn test_generate_public_key_for_4_nonce() {
+            let prvk = from_str_hex("b0844296190762a600795411a184cc3a13049ea11acd3fc6e6abdac7c7d91a66".to_string());
+            let output = generate_public_key(prvk);
+            assert_eq!(output, "c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138");
+    }
     }
 
 
