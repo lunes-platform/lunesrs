@@ -205,43 +205,172 @@ mod test {
     }
 
 
-    mod address_mainnet {
-        use super::*;
+    mod address {
+        use super::{to_address_hex, from_str_hex};
 
+        mod mainnet {
+            use super::*;
 
-        #[test]
-        fn test_generate_mainnet_version_1_address_for_0_nonce() {
-            let pubk = from_str_hex("1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575".to_string());
-            let output = to_address_hex(1, 1, pubk);
-            assert_eq!(output, "01312c2e5258dc5bccbb5c535944270f73b98f9739266329c8c0");
+            mod version_1 {
+                use super::*;
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_0_nonce() {
+                    let pubk = from_str_hex("1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575".to_string());
+                    let output = to_address_hex(1, 1, pubk);
+                    assert_eq!(output, "01312c2e5258dc5bccbb5c535944270f73b98f9739266329c8c0");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_1_nonce() {
+                    let pubk = from_str_hex("8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f".to_string());
+                    let output = to_address_hex(1, 1, pubk);
+                    assert_eq!(output, "0131640f230f396c4cf3f6ce7a6156387d52929902bff77423d8");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_2_nonce() {
+                    let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
+                    let output = to_address_hex(1, 1, pubk);
+                    assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_3_nonce() {
+                    let pubk = from_str_hex("18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873".to_string());
+                    let output = to_address_hex(1, 1, pubk);
+                    assert_eq!(output, "0131842e3a128fd462b51805798d36909dac78ff9d43abb4d3b3");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_4_nonce() {
+                    let pubk = from_str_hex("c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138".to_string());
+                    let output = to_address_hex(1, 1, pubk);
+                    assert_eq!(output, "01317d211450834bfc6e0024549218833debf377968a4eca4b2d");
+                }
+            }
+
+            mod version_2 {
+                use super::*;
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_0_nonce() {
+                    let pubk = from_str_hex("1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575".to_string());
+                    let output = to_address_hex(11, 1, pubk);
+                    assert_eq!(output, "0b312c2e5258dc5bccbb5c535944270f73b98f973926fe567f22");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_1_nonce() {
+                    let pubk = from_str_hex("8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f".to_string());
+                    let output = to_address_hex(11, 1, pubk);
+                    assert_eq!(output, "0b31640f230f396c4cf3f6ce7a6156387d52929902bfabb54a49");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_2_nonce() {
+                    let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
+                    let output = to_address_hex(11, 1, pubk);
+                    assert_eq!(output, "0b3146cc1229797733630bfa38be72ca6df585e8521f152bafba");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_3_nonce() {
+                    let pubk = from_str_hex("18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873".to_string());
+                    let output = to_address_hex(11, 1, pubk);
+                    assert_eq!(output, "0b31842e3a128fd462b51805798d36909dac78ff9d43f2b8e319");
+                }
+
+                #[test]
+                fn test_generate_mainnet_version_1_address_for_4_nonce() {
+                    let pubk = from_str_hex("c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138".to_string());
+                    let output = to_address_hex(11, 1, pubk);
+                    assert_eq!(output, "0b317d211450834bfc6e0024549218833debf377968ab695eaf7");
+                }
+            }
         }
 
-        #[test]
-        fn test_generate_mainnet_version_1_address_for_1_nonce() {
-            let pubk = from_str_hex("8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f".to_string());
-            let output = to_address_hex(1, 1, pubk);
-            assert_eq!(output, "0131640f230f396c4cf3f6ce7a6156387d52929902bff77423d8");
-        }
+        mod testnet {
+            use super::*;
 
-        #[test]
-        fn test_generate_mainnet_version_1_address_for_2_nonce() {
-            let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
-            let output = to_address_hex(1, 1, pubk);
-            assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
-        }
+            mod version_1 {
+                use super::*;
 
-        #[test]
-        fn test_generate_mainnet_version_1_address_for_3_nonce() {
-            let pubk = from_str_hex("18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873".to_string());
-            let output = to_address_hex(1, 1, pubk);
-            assert_eq!(output, "0131842e3a128fd462b51805798d36909dac78ff9d43abb4d3b3");
-        }
+                #[test]
+                fn test_generate_testnet_version_1_address_for_0_nonce() {
+                    let pubk = from_str_hex("1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575".to_string());
+                    let output = to_address_hex(1, 0, pubk);
+                    assert_eq!(output, "01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0");
+                }
 
-        #[test]
-        fn test_generate_mainnet_version_1_address_for_4_nonce() {
-            let pubk = from_str_hex("c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138".to_string());
-            let output = to_address_hex(1, 1, pubk);
-            assert_eq!(output, "01317d211450834bfc6e0024549218833debf377968a4eca4b2d");
+                #[test]
+                fn test_generate_testnet_version_1_address_for_1_nonce() {
+                    let pubk = from_str_hex("8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f".to_string());
+                    let output = to_address_hex(1, 0, pubk);
+                    assert_eq!(output, "0130640f230f396c4cf3f6ce7a6156387d52929902bfdc19cb02");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_2_nonce() {
+                    let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
+                    let output = to_address_hex(1, 0, pubk);
+                    assert_eq!(output, "013046cc1229797733630bfa38be72ca6df585e8521f42414610");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_3_nonce() {
+                    let pubk = from_str_hex("18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873".to_string());
+                    let output = to_address_hex(1, 0, pubk);
+                    assert_eq!(output, "0130842e3a128fd462b51805798d36909dac78ff9d43e66f1ea7");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_4_nonce() {
+                    let pubk = from_str_hex("c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138".to_string());
+                    let output = to_address_hex(1, 0, pubk);
+                    assert_eq!(output, "01307d211450834bfc6e0024549218833debf377968a9619b6bb");
+                }
+
+            }
+
+            mod version_2 {
+                use super::*;
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_0_nonce() {
+                    let pubk = from_str_hex("1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575".to_string());
+                    let output = to_address_hex(11, 0, pubk);
+                    assert_eq!(output, "0b302c2e5258dc5bccbb5c535944270f73b98f97392650423846");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_1_nonce() {
+                    let pubk = from_str_hex("8afbb187cc11d78b6b6ea39f4542e67d2e5a9bfb704c50e2f69f00f718ccee7f".to_string());
+                    let output = to_address_hex(11, 0, pubk);
+                    assert_eq!(output, "0b30640f230f396c4cf3f6ce7a6156387d52929902bfbb9f09d2");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_2_nonce() {
+                    let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
+                    let output = to_address_hex(11, 0, pubk);
+                    assert_eq!(output, "0b3046cc1229797733630bfa38be72ca6df585e8521fb809f734");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_3_nonce() {
+                    let pubk = from_str_hex("18111dd232ddce7cf1a96d74cae4f10a42eb1fb34a3ddc726e111909a14e1873".to_string());
+                    let output = to_address_hex(11, 0, pubk);
+                    assert_eq!(output, "0b30842e3a128fd462b51805798d36909dac78ff9d43136b6231");
+                }
+
+                #[test]
+                fn test_generate_testnet_version_1_address_for_4_nonce() {
+                    let pubk = from_str_hex("c7331af1e72a2ea9019be355a04c7bbfb59f3042d19ca24feb42c7d32315a138".to_string());
+                let output = to_address_hex(11, 0, pubk);    
+                    assert_eq!(output, "0b307d211450834bfc6e0024549218833debf377968ab7dbdb69");
+                }
+            }
         }
     }
 }
