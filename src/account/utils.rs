@@ -1,47 +1,44 @@
+use hex::{decode, encode};
 use wasm_bindgen::prelude::wasm_bindgen;
-use hex::{encode, decode};
-
 
 #[wasm_bindgen]
 pub fn int_to_hex(int: u32) -> String {
     hex::encode(int.to_be_bytes())
 }
 
-
 #[wasm_bindgen]
 pub fn vec_to_hex(vec: Vec<u8>) -> String {
     encode(vec)
 }
-
 
 #[wasm_bindgen]
 pub fn str_to_hex(string: String) -> String {
     encode(string)
 }
 
-
 #[wasm_bindgen]
 pub fn from_str_hex(str_hex: String) -> Vec<u8> {
     match decode(str_hex) {
         Ok(string) => string,
-        Err(e) => panic!("ERROR: {}", e)
+        Err(e) => panic!("ERROR: {}", e),
     }
 }
 
-
 #[wasm_bindgen]
 pub fn blake2b32b(data: Vec<u8>) -> String {
-    use blake2::{Blake2bVar, digest::{Update, VariableOutput}};
+    use blake2::{
+        digest::{Update, VariableOutput},
+        Blake2bVar,
+    };
 
     match Blake2bVar::new(32) {
         Ok(mut hash) => {
             hash.update(&data);
             vec_to_hex(hash.finalize_boxed().to_vec())
-        },
-        Err(e) => panic!("ERROR: {}", e)
+        }
+        Err(e) => panic!("ERROR: {}", e),
     }
 }
-
 
 #[wasm_bindgen]
 pub fn keccak256(data: Vec<u8>) -> String {
@@ -55,9 +52,6 @@ pub fn keccak256(data: Vec<u8>) -> String {
 
     vec_to_hex(result.to_vec())
 }
-
-
-
 
 #[cfg(test)]
 mod test {
@@ -82,7 +76,6 @@ mod test {
         assert_eq!(output, result);
     }
 
-
     #[test]
     #[wasm_bindgen_test]
     fn test_min_to_hex() {
@@ -91,7 +84,6 @@ mod test {
         assert_eq!(output, "00000000");
     }
 
-
     #[test]
     #[wasm_bindgen_test]
     fn test_random_to_hex() {
@@ -99,7 +91,6 @@ mod test {
 
         assert_eq!(output, "0001523b");
     }
-
 
     #[test]
     #[wasm_bindgen_test]
