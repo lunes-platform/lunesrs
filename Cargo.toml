@@ -1,11 +1,11 @@
 [package]
-name = "lunes-axolotl"
+name = "lunesrs"
 readme = "README.md"
 edition = "2021"
-version = "0.4.0"
+version = "0.4.2"
 license = "Apache-2.0"
 authors = ["Lunes Platform <development@lunes.io>"]
-repository = "https://github.com/lunes-platform/lunes-axolotl"
+repository = "https://github.com/lunes-platform/lunesrs"
 description = "Library for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet."
 keywords = ["ed25519-axolotl", "blake2b32bytes", "cryptography", "cryptocurrencies", "wasm"]
 categories = ["algorithms", "cryptography::cryptocurrencies", "cryptography", "wasm"]
