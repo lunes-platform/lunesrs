@@ -25,7 +25,7 @@ BuildPackage:
         - cargo install wasm-pack
     stage: build
     script:
-        - cargo/bin/wasm-pack build --target nodejs
+        - wasm-pack build --target nodejs
     artifacts:
         name: "lunescrab wasm" 
         expose_as: "pre-release"
