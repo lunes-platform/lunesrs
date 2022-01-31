@@ -1,6 +1,12 @@
-use utils::{blake2b32b, from_str_hex, keccak256, vec_to_hex};
+wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
+use utils::{blake2b32b, from_str_hex, int_to_hex, keccak256, str_to_hex, vec_to_hex};
 use wasm_bindgen::prelude::wasm_bindgen;
 pub mod utils;
+
+#[wasm_bindgen]
+pub fn concat_nonce_seed_then_hex(nonce: u32, seed: String) -> String {
+    format!("{}{}", int_to_hex(nonce), str_to_hex(seed))
+}
 
 #[wasm_bindgen]
 pub fn to_blake2b32b_then_keccak256_then_hex(raw_seed: Vec<u8>) -> String {
@@ -96,6 +102,55 @@ pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
 mod test {
     use super::*;
     use wasm_bindgen_test::wasm_bindgen_test;
+
+    mod nonce_seed {
+        use super::{concat_nonce_seed_then_hex, wasm_bindgen_test};
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_nonce_seed_for_0_nonce() {
+            let nonce = 0;
+            let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+
+            assert_eq!(concat_nonce_seed_then_hex(nonce, seed), "000000007363727562206775617264207377696d2063617463682072616e67652075706f6e206461776e20656e73757265207365676d656e7420616c7068612073656e74656e6365207370656e64206566666f7274206261722062656e65666974");
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_nonce_seed_for_1_nonce() {
+            let nonce = 1;
+            let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+
+            assert_eq!(concat_nonce_seed_then_hex(nonce, seed), "000000017363727562206775617264207377696d2063617463682072616e67652075706f6e206461776e20656e73757265207365676d656e7420616c7068612073656e74656e6365207370656e64206566666f7274206261722062656e65666974");
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_nonce_seed_for_2_nonce() {
+            let nonce = 2;
+            let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+
+            assert_eq!(concat_nonce_seed_then_hex(nonce, seed), "000000027363727562206775617264207377696d2063617463682072616e67652075706f6e206461776e20656e73757265207365676d656e7420616c7068612073656e74656e6365207370656e64206566666f7274206261722062656e65666974");
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_nonce_seed_for_3_nonce() {
+            let nonce = 3;
+            let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+
+            assert_eq!(concat_nonce_seed_then_hex(nonce, seed), "000000037363727562206775617264207377696d2063617463682072616e67652075706f6e206461776e20656e73757265207365676d656e7420616c7068612073656e74656e6365207370656e64206566666f7274206261722062656e65666974");
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_nonce_seed_for_4_nonce() {
+            let nonce = 4;
+            let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+
+            assert_eq!(concat_nonce_seed_then_hex(nonce, seed), "000000047363727562206775617264207377696d2063617463682072616e67652075706f6e206461776e20656e73757265207365676d656e7420616c7068612073656e74656e6365207370656e64206566666f7274206261722062656e65666974");
+        }
+    }
 
     mod blake2b32b_then_keccak256 {
         use super::{from_str_hex, to_blake2b32b_then_keccak256_then_hex, wasm_bindgen_test};
