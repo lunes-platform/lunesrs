@@ -1,30 +1,56 @@
+use bs58;
 use hex::{decode, encode};
+use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
 
+
 #[wasm_bindgen]
-pub fn int_to_hex(int: u32) -> String {
-    hex::encode(int.to_be_bytes())
+pub fn b58_to_vec(base58: String) -> Vec<u8> {
+    match bs58::decode(base58).into_vec() {
+        Ok(arr) => arr,
+        Err(e) => panic!("\x1b[91m\x1bERRO de base58 para hexadecimal {}\x1b[0m", e),
+    }
 }
 
 #[wasm_bindgen]
-pub fn vec_to_hex(vec: Vec<u8>) -> String {
-    encode(vec)
-}
-
-#[wasm_bindgen]
-pub fn str_to_hex(string: String) -> String {
-    encode(string)
+pub fn hex_to_b58(hex: String) -> String {
+    bs58::encode(from_str_hex(hex)).into_string()
 }
 
 #[wasm_bindgen]
 pub fn from_str_hex(str_hex: String) -> Vec<u8> {
     match decode(str_hex) {
         Ok(string) => string,
-        Err(e) => panic!("ERROR: {}", e),
+        Err(e) => panic!(
+            "\x1b[91m\x1bmGot one when converting string to hex: {}\x1b[0m",
+            e
+        ),
     }
 }
 
 #[wasm_bindgen]
+pub fn random_triple_number() -> Vec<u32> {
+    let word_count = 2048;
+    let random = random_bytes(4);
+    let x = random[3] + (random[2] << 8) + (random[1] << 16) + (random[0] << 24);
+    let w1 = x % word_count;
+    let w2 = (((x / word_count) >> 0) + w1) % word_count;
+    let w3 = (((((x / word_count) >> 0) / word_count) >> 0) + w2) % word_count;
+    vec![w1, w2, w3]
+}
+
+pub fn int_to_hex(int: u32) -> String {
+    hex::encode(int.to_be_bytes())
+}
+
+pub fn vec_to_hex(vec: Vec<u8>) -> String {
+    encode(vec)
+}
+
+pub fn str_to_hex(string: String) -> String {
+    encode(string)
+}
+
 pub fn blake2b32b(data: Vec<u8>) -> String {
     use blake2::{
         digest::{Update, VariableOutput},
@@ -40,7 +66,6 @@ pub fn blake2b32b(data: Vec<u8>) -> String {
     }
 }
 
-#[wasm_bindgen]
 pub fn keccak256(data: Vec<u8>) -> String {
     use tiny_keccak::{Hasher, Keccak};
 
@@ -53,13 +78,20 @@ pub fn keccak256(data: Vec<u8>) -> String {
     vec_to_hex(result.to_vec())
 }
 
+pub fn random_bytes(size: usize) -> Vec<u32> {
+    let mut seed: Vec<u32> = vec![0; size];
+    let mut rng = rand::thread_rng();
+    for i in 0..seed.len() {
+        seed[i] = rng.gen_range(0..=255);
+    }
+    return seed;
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
-    use wasm_bindgen_test::wasm_bindgen_test;
 
     #[test]
-    #[wasm_bindgen_test]
     fn test_blake2b_with_digest_size_of_32bytes() {
         let input = "lunes".to_string().as_bytes().to_vec();
         let result = "03173186d19ccff93e5c80266af36e289e0dfac4ccd7fd5e604212650535d4e3";
@@ -68,7 +100,6 @@ mod test {
     }
 
     #[test]
-    #[wasm_bindgen_test]
     fn test_keccak_with_digest_size_of_256bytes() {
         let input = "lunes".to_string().as_bytes().to_vec();
         let result = "92fbe255b883caae16d70fa91e473c7f516d7c994ca560b45575b4230e7350d7";
@@ -77,7 +108,6 @@ mod test {
     }
 
     #[test]
-    #[wasm_bindgen_test]
     fn test_min_to_hex() {
         let output = int_to_hex(0u32);
 
@@ -85,7 +115,6 @@ mod test {
     }
 
     #[test]
-    #[wasm_bindgen_test]
     fn test_random_to_hex() {
         let output = int_to_hex(86587u32);
 
@@ -93,7 +122,6 @@ mod test {
     }
 
     #[test]
-    #[wasm_bindgen_test]
     fn test_max_to_hex() {
         let output = int_to_hex(4_294_967_295u32);
 

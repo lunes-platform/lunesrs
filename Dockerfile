@@ -6,4 +6,7 @@ RUN apt update -y && \
     apt install nodejs -y
 
 # install rust dependencies
-RUN cargo install wasm-pack cargo-watch cargo-x
+RUN cargo install wasm-pack
+RUN cargo-watch
+RUN cargo-x
+RUN rustup component add rustfmt

@@ -22,10 +22,12 @@ wasm-pack test --node
 [dependencies]
 tiny-keccak = { version = "2.0.0", features = ["keccak"] }
 wasm-bindgen-test = "0.3.29"
-ed25519-axolotl = "1.2.1"
+ed25519-axolotl = "1.5.0"
 wasm-bindgen = "0.2.78"
 blake2 = "0.10.2"
 sha2 = "0.10.1"
+rand = "0.8.4"
+bs58 = "0.4.0"
 hex = "0.4.3"
 
 [package.metadata.wasm-pack.profile.release]
