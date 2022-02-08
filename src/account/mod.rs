@@ -1,7 +1,7 @@
 wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
-use utils::{blake2b32b, from_str_hex, int_to_hex, keccak256, str_to_hex, vec_to_hex};
-use wasm_bindgen::prelude::wasm_bindgen;
+
 pub mod utils;
+use utils::{blake2b32b, from_str_hex, int_to_hex, keccak256, str_to_hex, vec_to_hex};
 
 fn concat_nonce_seed_then_hex(nonce: u32, seed: String) -> String {
     format!("{}{}", int_to_hex(nonce), str_to_hex(seed))
@@ -20,86 +20,147 @@ fn to_sha256_then_hex(raw_hash_seed: Vec<u8>) -> String {
     vec_to_hex(hasher.finalize().to_vec())
 }
 
-#[wasm_bindgen]
-pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
-    use ed25519_axolotl::KeyPair;
-
-    let prvk = {
-        KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
-            .prvk
-            .iter()
-            .map(|x| *x as u8)
-            .collect()
+mod generate {
+    use super::{
+        concat_nonce_seed_then_hex, to_blake2b32b_then_keccak256_then_hex, to_sha256_then_hex,
+        utils::{from_str_hex, vec_to_hex},
     };
-    vec_to_hex(prvk)
-}
-
-#[wasm_bindgen]
-pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
-    use ed25519_axolotl::KeyPair;
-
-    let pubk = {
-        KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
-            .pubk
-            .iter()
-            .map(|x| *x as u8)
-            .collect()
-    };
-    vec_to_hex(pubk)
-}
-
-#[wasm_bindgen]
-pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
     use blake2::{
         digest::{Update, VariableOutput},
         Blake2bVar,
     };
+    use ed25519_axolotl::KeyPair;
     use tiny_keccak::{Hasher, Keccak};
+    use wasm_bindgen::prelude::wasm_bindgen;
 
-    let raw_addr = {
-        let mut pubk = match Blake2bVar::new(32) {
+    #[wasm_bindgen]
+    pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
+        let prvk = {
+            KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
+                .prvk
+                .iter()
+                .map(|x| *x as u8)
+                .collect()
+        };
+        vec_to_hex(prvk)
+    }
+
+    #[wasm_bindgen]
+    pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
+        let pubk = {
+            KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
+                .pubk
+                .iter()
+                .map(|x| *x as u8)
+                .collect()
+        };
+        vec_to_hex(pubk)
+    }
+
+    #[wasm_bindgen]
+    pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
+        let raw_addr = {
+            let mut pubk = match Blake2bVar::new(32) {
+                Ok(mut hash) => {
+                    hash.update(&public_key);
+
+                    let mut k256 = Keccak::v256();
+                    let mut pubk = [0; 32];
+
+                    k256.update(&hash.finalize_boxed().to_vec());
+                    k256.finalize(&mut pubk);
+
+                    pubk[0..20].to_vec()
+                }
+                Err(e) => panic!("ERROR: {}", e),
+            };
+
+            pubk.insert(0, chain.to_string().as_bytes()[0]);
+            pubk.insert(0, version);
+            pubk
+        };
+
+        let checksum = match Blake2bVar::new(32) {
             Ok(mut hash) => {
-                hash.update(&public_key);
+                hash.update(&raw_addr);
 
                 let mut k256 = Keccak::v256();
-                let mut pubk = [0; 32];
+                let mut addr = [0; 32];
 
                 k256.update(&hash.finalize_boxed().to_vec());
-                k256.finalize(&mut pubk);
+                k256.finalize(&mut addr);
 
-                pubk[0..20].to_vec()
+                addr[0..4].to_vec()
             }
             Err(e) => panic!("ERROR: {}", e),
         };
 
-        pubk.insert(0, chain.to_string().as_bytes()[0]);
-        pubk.insert(0, version);
-        pubk
-    };
+        vec_to_hex([raw_addr, checksum].concat())
+    }
 
-    let checksum = match Blake2bVar::new(32) {
-        Ok(mut hash) => {
-            hash.update(&raw_addr);
-
-            let mut k256 = Keccak::v256();
-            let mut addr = [0; 32];
-
-            k256.update(&hash.finalize_boxed().to_vec());
-            k256.finalize(&mut addr);
-
-            addr[0..4].to_vec()
-        }
-        Err(e) => panic!("ERROR: {}", e),
-    };
-
-    vec_to_hex([raw_addr, checksum].concat())
+    #[wasm_bindgen]
+    pub fn hidden_seed(nonce: u32, seed: String) -> String {
+        to_sha256_then_hex(from_str_hex(to_blake2b32b_then_keccak256_then_hex(
+            from_str_hex(concat_nonce_seed_then_hex(nonce, seed)),
+        )))
+    }
 }
 
-#[wasm_bindgen]
-pub fn hidden_seed(nonce: u32, seed: String) -> String {
-    to_sha256_then_hex(from_str_hex(to_blake2b32b_then_keccak256_then_hex(
-        from_str_hex(concat_nonce_seed_then_hex(nonce, seed)),
-    )))
+mod validate {
+    use super::{
+        to_blake2b32b_then_keccak256_then_hex,
+        utils::{from_str_hex, ADDRESS_CHECKSUM_LENGTH, ADDRESS_LENGTH, ADDRESS_VERSION},
+    };
+    use ed25519_axolotl::KeyPair;
+    use wasm_bindgen::prelude::wasm_bindgen;
+
+    #[wasm_bindgen]
+    pub fn validate_address(chain_id: u8, address: Vec<u8>) -> bool {
+        fn cut_in_half(addr: Vec<u8>, index: u8) -> (Vec<u8>, Vec<u8>) {
+            let x = addr.len() - index as usize;
+            (addr[..x].to_vec(), addr[x..].to_vec())
+        }
+
+        let (address_left, checksum) = cut_in_half(address.clone(), ADDRESS_CHECKSUM_LENGTH);
+        let hash_address_left =
+            from_str_hex(to_blake2b32b_then_keccak256_then_hex(address_left.clone()));
+        let chain = &hash_address_left[..4];
+
+        if address.len() as u8 != ADDRESS_LENGTH {
+            false
+        } else if address[1] != chain_id.to_string().as_bytes()[0] {
+            false
+        } else if ADDRESS_VERSION.contains(&address[0]) == false {
+            false
+        } else if checksum != chain {
+            false
+        } else {
+            true
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn fast_signature(
+        private_key: Vec<u32>,
+        msg: Vec<u32>,
+        random: Option<Vec<u32>>,
+    ) -> Vec<u32> {
+        KeyPair::fast_signature(private_key, msg, random)
+    }
+
+    #[wasm_bindgen]
+    pub fn full_signature(
+        private_key: Vec<u32>,
+        msg: Vec<u32>,
+        random: Option<Vec<u32>>,
+    ) -> Vec<u32> {
+        KeyPair::full_signature(private_key, msg, random)
+    }
+
+    #[wasm_bindgen]
+    pub fn validate_signature(public_key: Vec<u32>, message: Vec<u32>, signature: Vec<u32>) -> bool {
+        KeyPair::verify(public_key, message, signature)
+    }
 }
 
 #[cfg(test)]
@@ -107,8 +168,208 @@ mod test {
     use super::*;
     use wasm_bindgen_test::wasm_bindgen_test;
 
+    mod signature_functions {
+        use super::{
+            validate::{fast_signature, full_signature},
+            wasm_bindgen_test,
+        };
+        use ed25519_axolotl::{random_bytes, str_to_vec32, KeyPair};
+
+        fn main_keys() -> KeyPair {
+            KeyPair::new(Some(vec![1; 32]))
+        }
+
+        mod fast_sign_funtion {
+            use super::*;
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_0() {
+                let msg = str_to_vec32("hello e25519 axolotl".to_string());
+                let signature =
+                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_1() {
+                let msg = str_to_vec32("testing other message in signature".to_string());
+                let signature =
+                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_2() {
+                let msg = str_to_vec32("1234567890".to_string());
+                let signature =
+                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_3() {
+                let msg = str_to_vec32("acacacacacaca".to_string());
+                let signature =
+                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_4() {
+                let msg = str_to_vec32("new test".to_string());
+                let signature =
+                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_5() {
+                let msg = str_to_vec32("five test with sign function".to_string());
+                let signature =
+                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+        }
+
+        mod full_sign_function {
+            use super::*;
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_0() {
+                let msg = str_to_vec32("hello e25519 axolotl".to_string());
+                let signature =
+                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_1() {
+                let msg = str_to_vec32("testing other message in signature".to_string());
+                let signature =
+                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_2() {
+                let msg = str_to_vec32("1234567890".to_string());
+                let signature =
+                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_3() {
+                let msg = str_to_vec32("acacacacacaca".to_string());
+                let signature =
+                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_4() {
+                let msg = str_to_vec32("new test".to_string());
+                let signature =
+                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+
+            #[test]
+            #[wasm_bindgen_test]
+            fn test_5() {
+                let msg = str_to_vec32("five test with sign function".to_string());
+                let signature =
+                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+
+                assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
+            }
+        }
+    }
+
+    mod validate_address {
+        use super::{from_str_hex, validate::validate_address, wasm_bindgen_test};
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_0_fail() {
+            let addr =
+                from_str_hex("01312c2e5258dc5bccbb5c535944270f73b98f9739266329c8c0".to_string());
+            assert_eq!(validate_address(0, addr), false);
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_0() {
+            let addr =
+                from_str_hex("01312c2e5258dc5bccbb5c535944270f73b98f9739266329c8c0".to_string());
+            assert_eq!(validate_address(1, addr), true);
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_1() {
+            let addr =
+                from_str_hex("0131640f230f396c4cf3f6ce7a6156387d52929902bff77423d8".to_string());
+            assert_eq!(validate_address(1, addr), true);
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_2() {
+            let addr =
+                from_str_hex("013146cc1229797733630bfa38be72ca6df585e8521fd44b5738".to_string());
+            assert_eq!(validate_address(1, addr), true);
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_3() {
+            let addr =
+                from_str_hex("01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0".to_string());
+            assert_eq!(validate_address(0, addr), true);
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_4() {
+            let addr =
+                from_str_hex("0130640f230f396c4cf3f6ce7a6156387d52929902bfdc19cb02".to_string());
+            assert_eq!(validate_address(0, addr), true);
+        }
+
+        #[test]
+        #[wasm_bindgen_test]
+        fn test_4_fail() {
+            let addr =
+                from_str_hex("0130640f230f396c4cf3f6ce7a6156387d52929902bfdc19cb02".to_string());
+            assert_eq!(validate_address(1, addr), false);
+        }
+    }
+
     mod hidden_seed {
-        use super::hidden_seed;
+        use super::generate::hidden_seed;
 
         #[test]
         fn test_nonce_seed_for_0_nonce() {
@@ -329,7 +590,7 @@ mod test {
     }
 
     mod private_key {
-        use super::{from_str_hex, to_private_key_hex, wasm_bindgen_test};
+        use super::{from_str_hex, generate::to_private_key_hex, wasm_bindgen_test};
 
         #[test]
         #[wasm_bindgen_test]
@@ -398,7 +659,7 @@ mod test {
     }
 
     mod publick_key {
-        use super::{from_str_hex, to_public_key_hex, wasm_bindgen_test};
+        use super::{from_str_hex, generate::to_public_key_hex, wasm_bindgen_test};
 
         #[test]
         #[wasm_bindgen_test]
@@ -467,7 +728,7 @@ mod test {
     }
 
     mod address {
-        use super::{from_str_hex, to_address_hex, wasm_bindgen_test};
+        use super::{from_str_hex, generate::to_address_hex, wasm_bindgen_test};
 
         mod mainnet {
             use super::*;
