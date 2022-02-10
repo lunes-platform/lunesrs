@@ -7,6 +7,6 @@ RUN apt update -y && \
 
 # install rust dependencies
 RUN cargo install wasm-pack
-RUN cargo-watch
-RUN cargo-x
+RUN cargo install cargo-watch
+RUN cargo install cargo-x
 RUN rustup component add rustfmt

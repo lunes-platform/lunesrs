@@ -33,7 +33,7 @@ mod generate {
     use tiny_keccak::{Hasher, Keccak};
     use wasm_bindgen::prelude::wasm_bindgen;
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "toPrivateKeyHex")]
     pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
         let prvk = {
             KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
@@ -45,7 +45,7 @@ mod generate {
         vec_to_hex(prvk)
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "toPublicKeyHex")]
     pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
         let pubk = {
             KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
@@ -57,7 +57,7 @@ mod generate {
         vec_to_hex(pubk)
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "toAddressHex")]
     pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
         let raw_addr = {
             let mut pubk = match Blake2bVar::new(32) {
@@ -98,7 +98,7 @@ mod generate {
         vec_to_hex([raw_addr, checksum].concat())
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "hiddenSeed")]
     pub fn hidden_seed(nonce: u32, seed: String) -> String {
         to_sha256_then_hex(from_str_hex(to_blake2b32b_then_keccak256_then_hex(
             from_str_hex(concat_nonce_seed_then_hex(nonce, seed)),
@@ -114,7 +114,7 @@ mod validate {
     use ed25519_axolotl::KeyPair;
     use wasm_bindgen::prelude::wasm_bindgen;
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "validateAddress")]
     pub fn validate_address(chain_id: u8, address: Vec<u8>) -> bool {
         fn cut_in_half(addr: Vec<u8>, index: u8) -> (Vec<u8>, Vec<u8>) {
             let x = addr.len() - index as usize;
@@ -139,7 +139,7 @@ mod validate {
         }
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "fastSignature")]
     pub fn fast_signature(
         private_key: Vec<u32>,
         msg: Vec<u32>,
@@ -148,7 +148,7 @@ mod validate {
         KeyPair::fast_signature(private_key, msg, random)
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "fullSignature")]
     pub fn full_signature(
         private_key: Vec<u32>,
         msg: Vec<u32>,
@@ -157,7 +157,7 @@ mod validate {
         KeyPair::full_signature(private_key, msg, random)
     }
 
-    #[wasm_bindgen]
+    #[wasm_bindgen(js_name = "validateSignature")]
     pub fn validate_signature(public_key: Vec<u32>, message: Vec<u32>, signature: Vec<u32>) -> bool {
         KeyPair::verify(public_key, message, signature)
     }
