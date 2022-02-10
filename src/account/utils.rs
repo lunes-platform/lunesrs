@@ -8,7 +8,7 @@ pub const ADDRESS_CHECKSUM_LENGTH: u8 = 4;
 pub const ADDRESS_HASH_LENGTH: u8 = 20;
 pub const ADDRESS_LENGTH: u8 = 1 + 1 + ADDRESS_CHECKSUM_LENGTH + ADDRESS_HASH_LENGTH;
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = "b58ToVec")]
 pub fn b58_to_vec(base58: String) -> Vec<u8> {
     match bs58::decode(base58).into_vec() {
         Ok(arr) => arr,
@@ -16,12 +16,12 @@ pub fn b58_to_vec(base58: String) -> Vec<u8> {
     }
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = "hexToB58")]
 pub fn hex_to_b58(hex: String) -> String {
     bs58::encode(from_str_hex(hex)).into_string()
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = "fromStrHex")]
 pub fn from_str_hex(str_hex: String) -> Vec<u8> {
     match decode(str_hex) {
         Ok(string) => string,
@@ -32,7 +32,7 @@ pub fn from_str_hex(str_hex: String) -> Vec<u8> {
     }
 }
 
-#[wasm_bindgen]
+#[wasm_bindgen(js_name = "randomTripleNumber")]
 pub fn random_triple_number() -> Vec<u32> {
     let word_count = 2048;
     let random = random_bytes(4);
