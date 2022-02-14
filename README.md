@@ -11,6 +11,7 @@
 [![Test](https://github.com/lunes-platform/lunesrs/actions/workflows/python-app.yml/badge.svg)](https://github.com/lunes-platform/lunesrs/actions/workflows/python-app.yml)
 [![License](https://img.shields.io/github/license/lunes-platform/lunesrs?color=blueviolet)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/stargazers)
+
 [![CommitActivity](https://img.shields.io/github/commit-activity/m/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/pulse)
 [![Forks](https://img.shields.io/github/forks/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/network/members)
 [![Contributors](https://flat.badgen.net/github/contributors/lunes-platform/lunesrs?color=purple)](https://github.com/lunes-platform/lunesrs/graphs/contributors)
