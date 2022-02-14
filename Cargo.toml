@@ -2,7 +2,7 @@
 name = "lunesrs"
 readme = "README.md"
 edition = "2021"
-version = "1.5.2"
+version = "1.5.5"
 license = "Apache-2.0"
 authors = ["Lunes Platform <development@lunes.io>"]
 repository = "https://github.com/lunes-platform/lunesrs"

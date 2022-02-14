@@ -1,12 +1,11 @@
 FROM rust
 
-# install rust
-RUN apt update -y && \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt install nodejs -y
+
+# install dependencies
+RUN apt update -y && apt install zsh curl -y
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # install rust dependencies
 RUN cargo install wasm-pack
 RUN cargo install cargo-watch
 RUN cargo install cargo-x
-RUN rustup component add rustfmt
