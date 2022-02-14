@@ -43,11 +43,37 @@ pub fn random_triple_number() -> Vec<u32> {
     vec![w1, w2, w3]
 }
 
+#[wasm_bindgen(js_name = "toVecu32")]
+pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
+    arr.iter().map(|x| *x as u32).collect()
+}
+
+#[wasm_bindgen(js_name = "toVecu8")]
+pub fn to_vecu8(arr: Vec<u32>) -> Vec<u8> {
+    arr.iter().map(|x| *x as u8).collect()
+}
+
+#[wasm_bindgen(js_name = "vecu32ToHex")]
+pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
+    encode(to_vecu8(vec))
+}
+
+#[wasm_bindgen(js_name = "stringToVecu32")]
+pub fn str_to_vecu32(message: String) -> Vec<u32> {
+    // message.as_bytes().iter().map(|x| *x as u32).collect()
+    ed25519_axolotl::str_to_vec32(message)
+}
+
+#[wasm_bindgen(js_name = "vecu32ToString")]
+pub fn vecu32_to_str(message: Vec<u32>) -> String {
+    ed25519_axolotl::vec32_to_str(&message)
+}
+
 pub fn int_to_hex(int: u32) -> String {
     hex::encode(int.to_be_bytes())
 }
 
-pub fn vec_to_hex(vec: Vec<u8>) -> String {
+pub fn vecu8_to_hex(vec: Vec<u8>) -> String {
     encode(vec)
 }
 
@@ -64,7 +90,7 @@ pub fn blake2b32b(data: Vec<u8>) -> String {
     match Blake2bVar::new(32) {
         Ok(mut hash) => {
             hash.update(&data);
-            vec_to_hex(hash.finalize_boxed().to_vec())
+            vecu8_to_hex(hash.finalize_boxed().to_vec())
         }
         Err(e) => panic!("ERROR: {}", e),
     }
@@ -79,7 +105,7 @@ pub fn keccak256(data: Vec<u8>) -> String {
     k256.update(&data);
     k256.finalize(&mut result);
 
-    vec_to_hex(result.to_vec())
+    vecu8_to_hex(result.to_vec())
 }
 
 pub fn random_bytes(size: usize) -> Vec<u32> {

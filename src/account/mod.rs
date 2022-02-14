@@ -1,7 +1,7 @@
 wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
 
 pub mod utils;
-use utils::{blake2b32b, from_str_hex, int_to_hex, keccak256, str_to_hex, vec_to_hex};
+use utils::{blake2b32b, from_str_hex, int_to_hex, keccak256, str_to_hex, vecu8_to_hex};
 
 fn concat_nonce_seed_then_hex(nonce: u32, seed: String) -> String {
     format!("{}{}", int_to_hex(nonce), str_to_hex(seed))
@@ -13,17 +13,18 @@ fn to_blake2b32b_then_keccak256_then_hex(raw_seed: Vec<u8>) -> String {
 
 fn to_sha256_then_hex(raw_hash_seed: Vec<u8>) -> String {
     use sha2::{Digest, Sha256};
-
+    
     let mut hasher = Sha256::new();
     hasher.update(&raw_hash_seed);
-
-    vec_to_hex(hasher.finalize().to_vec())
+    
+    vecu8_to_hex(hasher.finalize().to_vec())
 }
 
+#[allow(unused)]
 mod generate {
     use super::{
         concat_nonce_seed_then_hex, to_blake2b32b_then_keccak256_then_hex, to_sha256_then_hex,
-        utils::{from_str_hex, vec_to_hex},
+        utils::{from_str_hex, to_vecu32, vecu32_to_hex, vecu8_to_hex},
     };
     use blake2::{
         digest::{Update, VariableOutput},
@@ -35,26 +36,14 @@ mod generate {
 
     #[wasm_bindgen(js_name = "toPrivateKeyHex")]
     pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
-        let prvk = {
-            KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
-                .prvk
-                .iter()
-                .map(|x| *x as u8)
-                .collect()
-        };
-        vec_to_hex(prvk)
+        let prvk = KeyPair::new(Some(to_vecu32(hash_seed))).prvk;
+        vecu32_to_hex(prvk)
     }
 
     #[wasm_bindgen(js_name = "toPublicKeyHex")]
     pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
-        let pubk = {
-            KeyPair::new(Some(hash_seed.iter().map(|x| *x as u32).collect()))
-                .pubk
-                .iter()
-                .map(|x| *x as u8)
-                .collect()
-        };
-        vec_to_hex(pubk)
+        let pubk = KeyPair::new(Some(to_vecu32(hash_seed))).pubk;
+        vecu32_to_hex(pubk)
     }
 
     #[wasm_bindgen(js_name = "toAddressHex")]
@@ -95,7 +84,7 @@ mod generate {
             Err(e) => panic!("ERROR: {}", e),
         };
 
-        vec_to_hex([raw_addr, checksum].concat())
+        vecu8_to_hex([raw_addr, checksum].concat())
     }
 
     #[wasm_bindgen(js_name = "hiddenSeed")]
@@ -106,12 +95,13 @@ mod generate {
     }
 }
 
+#[allow(unused)]
 mod validate {
     use super::{
         to_blake2b32b_then_keccak256_then_hex,
         utils::{from_str_hex, ADDRESS_CHECKSUM_LENGTH, ADDRESS_LENGTH, ADDRESS_VERSION},
     };
-    use ed25519_axolotl::KeyPair;
+    use ed25519_axolotl::{random_bytes, KeyPair};
     use wasm_bindgen::prelude::wasm_bindgen;
 
     #[wasm_bindgen(js_name = "validateAddress")]
@@ -140,25 +130,21 @@ mod validate {
     }
 
     #[wasm_bindgen(js_name = "fastSignature")]
-    pub fn fast_signature(
-        private_key: Vec<u32>,
-        msg: Vec<u32>,
-        random: Option<Vec<u32>>,
-    ) -> Vec<u32> {
-        KeyPair::fast_signature(private_key, msg, random)
+    pub fn fast_signature(private_key: Vec<u32>, msg: Vec<u32>) -> Vec<u32> {
+        KeyPair::fast_signature(private_key, msg, Some(random_bytes(64)))
     }
 
     #[wasm_bindgen(js_name = "fullSignature")]
-    pub fn full_signature(
-        private_key: Vec<u32>,
-        msg: Vec<u32>,
-        random: Option<Vec<u32>>,
-    ) -> Vec<u32> {
-        KeyPair::full_signature(private_key, msg, random)
+    pub fn full_signature(private_key: Vec<u32>, msg: Vec<u32>) -> Vec<u32> {
+        KeyPair::fast_signature(private_key, msg, Some(random_bytes(64)))
     }
 
     #[wasm_bindgen(js_name = "validateSignature")]
-    pub fn validate_signature(public_key: Vec<u32>, message: Vec<u32>, signature: Vec<u32>) -> bool {
+    pub fn validate_signature(
+        public_key: Vec<u32>,
+        message: Vec<u32>,
+        signature: Vec<u32>,
+    ) -> bool {
         KeyPair::verify(public_key, message, signature)
     }
 }
@@ -173,7 +159,7 @@ mod test {
             validate::{fast_signature, full_signature},
             wasm_bindgen_test,
         };
-        use ed25519_axolotl::{random_bytes, str_to_vec32, KeyPair};
+        use ed25519_axolotl::{str_to_vec32, KeyPair};
 
         fn main_keys() -> KeyPair {
             KeyPair::new(Some(vec![1; 32]))
@@ -186,8 +172,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_0() {
                 let msg = str_to_vec32("hello e25519 axolotl".to_string());
-                let signature =
-                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = fast_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -196,8 +181,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_1() {
                 let msg = str_to_vec32("testing other message in signature".to_string());
-                let signature =
-                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = fast_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -206,8 +190,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_2() {
                 let msg = str_to_vec32("1234567890".to_string());
-                let signature =
-                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = fast_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -216,8 +199,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_3() {
                 let msg = str_to_vec32("acacacacacaca".to_string());
-                let signature =
-                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = fast_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -226,8 +208,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_4() {
                 let msg = str_to_vec32("new test".to_string());
-                let signature =
-                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = fast_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -236,8 +217,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_5() {
                 let msg = str_to_vec32("five test with sign function".to_string());
-                let signature =
-                    fast_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = fast_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -250,8 +230,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_0() {
                 let msg = str_to_vec32("hello e25519 axolotl".to_string());
-                let signature =
-                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = full_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -260,8 +239,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_1() {
                 let msg = str_to_vec32("testing other message in signature".to_string());
-                let signature =
-                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = full_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -270,8 +248,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_2() {
                 let msg = str_to_vec32("1234567890".to_string());
-                let signature =
-                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = full_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -280,8 +257,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_3() {
                 let msg = str_to_vec32("acacacacacaca".to_string());
-                let signature =
-                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = full_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -290,8 +266,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_4() {
                 let msg = str_to_vec32("new test".to_string());
-                let signature =
-                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = full_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
@@ -300,8 +275,7 @@ mod test {
             #[wasm_bindgen_test]
             fn test_5() {
                 let msg = str_to_vec32("five test with sign function".to_string());
-                let signature =
-                    full_signature(main_keys().prvk, msg.clone(), Some(random_bytes(64)));
+                let signature = full_signature(main_keys().prvk, msg.clone());
 
                 assert_eq!(KeyPair::verify(main_keys().pubk, msg, signature), true)
             }
