@@ -12,7 +12,7 @@ env:
 jobs:
   Tests:
 
-    runs-on: rust
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v2
