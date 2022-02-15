@@ -8,7 +8,7 @@
 
 - Rust Library target WebAssembly and IoT for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet.
 
-[![Build](https://github.com/lunes-plataform/lunesrs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-plataform/lunesrs/actions/workflows/build.yml)
+[![Build](https://github.com/lunes-platform/lunesrs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-platform/lunesrs/actions/workflows/build.yml)
 [![Test](https://github.com/lunes-platform/lunesrs/actions/workflows/python-app.yml/badge.svg)](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml)
 [![Stars](https://img.shields.io/github/stars/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/stargazers)
 [![Release](https://img.shields.io/github/v/release/lunes-platform/lunesrs)](https://github.com/lunes-platform/lunesrs/releases)
