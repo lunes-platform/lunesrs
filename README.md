@@ -8,9 +8,11 @@
 
 - Rust Library target WebAssembly and IoT for communication with nodes in mainnet or testnet of the lunes-blockchain network Allows the automation of sending assets, issue end reissue tokens, leasing, registry, and create new wallet.
 
+[![Build](https://github.com/lunes-plataform/lunesrs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-plataform/lunesrs/actions/workflows/build.yml)
 [![Test](https://github.com/lunes-platform/lunesrs/actions/workflows/python-app.yml/badge.svg)](https://github.com/lunes-platform/lunesrs/actions/workflows/python-app.yml)
-[![License](https://img.shields.io/github/license/lunes-platform/lunesrs?color=blueviolet)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/stargazers)
+[![Release](https://img.shields.io/github/v/release/lunes-platform/lunesrs)](https://github.com/lunes-platform/lunesrs/releases)
+[![License](https://img.shields.io/github/license/lunes-platform/lunesrs?color=blueviolet)](LICENSE)
 
 [![CommitActivity](https://img.shields.io/github/commit-activity/m/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/pulse)
 [![Forks](https://img.shields.io/github/forks/lunes-platform/lunesrs?color=blueviolet)](https://github.com/lunes-platform/lunesrs/network/members)
@@ -46,10 +48,7 @@ The changelog process for this project is described [here](CHANGELOG.md).
 
 Thanks to the following people who have contributed to this project:
 
-* [olivmath](https://github.com/olivmath)
-* [nunesinc](https://github.com/nunesinc)
-* [joelesteves](https://github.com/joelesteves)
-* [xonfps](https://github.com/xonfps)
+[![GitHub Contributors Image](https://contrib.rocks/image?repo=lunes-platform/lunesrs)](https://github.com/lunes-platform/lunesrs/graphs/contributors)
 
 ## Contact
 
