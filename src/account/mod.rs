@@ -46,6 +46,27 @@ mod generate {
         vecu32_to_hex(pubk)
     }
 
+    /// # toAddressHex Function
+    /// Receive version, blockchain (chain) and publick key and return a address hexadecimal
+    /// 
+    ///  # Example
+    /// Basic usage:
+    /// 
+    /// ```
+    ///   fn test_generate_mainnet_version_1_address_for_2_nonce() {
+    ///   let pubk = from_str_hex(
+    ///      "538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666"
+    ///          .to_string(),
+    ///  );
+    ///  let output = to_address_hex(1, 1, pubk);
+    ///  assert_eq!(
+    ///      output,
+    ///      "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738"
+    ///  );
+    ///  }
+    /// ```
+    /// 
+
     #[wasm_bindgen(js_name = "toAddressHex")]
     pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
         let raw_addr = {
