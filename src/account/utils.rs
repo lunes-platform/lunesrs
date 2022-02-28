@@ -8,6 +8,21 @@ pub const ADDRESS_CHECKSUM_LENGTH: u8 = 4;
 pub const ADDRESS_HASH_LENGTH: u8 = 20;
 pub const ADDRESS_LENGTH: u8 = 1 + 1 + ADDRESS_CHECKSUM_LENGTH + ADDRESS_HASH_LENGTH;
 
+
+/// # b58ToVec Function
+/// Use base 58
+/// Decode base58 input into vector (Vec<u8>)
+/// 
+/// # Example
+/// Basic usage:
+/// 
+/// ```
+/// use lunesrs::account::utils::b58_to_vec;
+/// 
+/// let input = "2Ej3vQ".to_string();
+/// let output = b58_to_vec(input);
+/// assert_eq!(output, [48, 97, 48, 97]);
+/// ```
 #[wasm_bindgen(js_name = "b58ToVec")]
 pub fn b58_to_vec(base58: String) -> Vec<u8> {
     match bs58::decode(base58).into_vec() {
