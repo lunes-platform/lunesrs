@@ -13,10 +13,10 @@ fn to_blake2b32b_then_keccak256_then_hex(raw_seed: Vec<u8>) -> String {
 
 fn to_sha256_then_hex(raw_hash_seed: Vec<u8>) -> String {
     use sha2::{Digest, Sha256};
-    
+
     let mut hasher = Sha256::new();
     hasher.update(&raw_hash_seed);
-    
+
     vecu8_to_hex(hasher.finalize().to_vec())
 }
 
@@ -96,13 +96,33 @@ mod generate {
 }
 
 #[allow(unused)]
-mod validate {
+pub mod validate {
     use super::{
         to_blake2b32b_then_keccak256_then_hex,
         utils::{from_str_hex, ADDRESS_CHECKSUM_LENGTH, ADDRESS_LENGTH, ADDRESS_VERSION},
     };
     use ed25519_axolotl::{random_bytes, KeyPair};
     use wasm_bindgen::prelude::wasm_bindgen;
+
+    /// # Validate Address Function
+    /// Receive a Blockchain Id ( chain id  = (0 -> testnet 1 -> main net )) and address and return a boolean result
+    ///
+    /// # Example:
+    /// Basic usage:
+    ///
+    /// ```rust
+    /// use lunesrs::account::validate::validate_address;
+    /// use lunesrs::account::utils::from_str_hex;
+    /// use lunesrs::account::utils::b58_to_vec;
+    ///
+    /// let testnet_id = 0;
+    /// let hexadecimal_address =  from_str_hex("01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0".to_string());
+    /// assert_eq!(validate_address(testnet_id, hexadecimal_address), true);
+    ///
+    /// let mainnet_id = 1;
+    /// let b58_address =   b58_to_vec("37nX3hdCt1GWeSsAMNFmWgbQWZZhbvBG3mX".to_string());
+    /// assert_eq!(validate_address(mainnet_id, b58_address), true);
+    /// ```
 
     #[wasm_bindgen(js_name = "validateAddress")]
     pub fn validate_address(chain_id: u8, address: Vec<u8>) -> bool {
