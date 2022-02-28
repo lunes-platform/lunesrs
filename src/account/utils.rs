@@ -67,6 +67,10 @@ pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
     arr.iter().map(|x| *x as u32).collect()
 }
 
+/// # Into Vector with u8
+/// 
+/// Transform any function into a Vector with u8, only using this function
+
 #[wasm_bindgen(js_name = "toVecu8")]
 pub fn to_vecu8(arr: Vec<u32>) -> Vec<u8> {
     arr.iter().map(|x| *x as u8).collect()
