@@ -21,7 +21,7 @@ fn to_sha256_then_hex(raw_hash_seed: Vec<u8>) -> String {
 }
 
 #[allow(unused)]
-mod generate {
+pub mod generate {
     use super::{
         concat_nonce_seed_then_hex, to_blake2b32b_then_keccak256_then_hex, to_sha256_then_hex,
         utils::{from_str_hex, to_vecu32, vecu32_to_hex, vecu8_to_hex},
@@ -53,14 +53,12 @@ mod generate {
     /// Basic usage:
     /// 
     /// ```
-    ///   use lunesrs::account::utils::from_str_hex;
+    /// use lunesrs::account::utils::from_str_hex;
+    /// use lunesrs::account::generate::to_address_hex;
     /// 
-    ///   let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
-    /// 
-    ///  let output = to_address_hex(1, 1, pubk);
-    /// 
-    ///  assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
-    ///  
+    /// let pubk = from_str_hex("538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string());
+    /// let output = to_address_hex(1, 1, pubk);
+    /// assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
     /// ```
      #[wasm_bindgen(js_name = "toAddressHex")]
     pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
