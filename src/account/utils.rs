@@ -87,6 +87,10 @@ pub fn str_to_vecu32(message: String) -> Vec<u32> {
     ed25519_axolotl::str_to_vec32(message)
 }
 
+/// # Vector u32 into String
+/// 
+/// The function transform a Vector with u32 into string
+
 #[wasm_bindgen(js_name = "vecu32ToString")]
 pub fn vecu32_to_str(message: Vec<u32>) -> String {
     ed25519_axolotl::vec32_to_str(&message)
