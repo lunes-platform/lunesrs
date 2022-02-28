@@ -21,7 +21,7 @@ fn to_sha256_then_hex(raw_hash_seed: Vec<u8>) -> String {
 }
 
 #[allow(unused)]
-mod generate {
+pub mod generate {
     use super::{
         concat_nonce_seed_then_hex, to_blake2b32b_then_keccak256_then_hex, to_sha256_then_hex,
         utils::{from_str_hex, to_vecu32, vecu32_to_hex, vecu8_to_hex},
@@ -86,6 +86,28 @@ mod generate {
 
         vecu8_to_hex([raw_addr, checksum].concat())
     }
+
+    /// # Hidden a Seed
+    /// 
+    /// Using two libs of criptography Blake2b32b, keccak256 
+    /// 
+    /// Pick up a seed and transform your hash(sha256) into a hexadecimal number
+    /// Concatenate a number of the Nonce, and seed, with this, transform into hexadecimal number
+    /// 
+    /// # Example:
+    /// 
+    /// Basic usage:
+    /// 
+    /// ```rust
+    /// use lunesrs::account::generate::hidden_seed;
+    /// 
+    /// let nonce = 0;
+    /// let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+    ///
+    /// assert_eq!(
+    ///    hidden_seed(nonce, seed),
+    ///    "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460")
+    /// ```
 
     #[wasm_bindgen(js_name = "hiddenSeed")]
     pub fn hidden_seed(nonce: u32, seed: String) -> String {
