@@ -58,6 +58,10 @@ pub fn random_triple_number() -> Vec<u32> {
     vec![w1, w2, w3]
 }
 
+/// # Into a Vector with u32
+/// 
+/// Transform any function into a Vector with u32 only using this function
+
 #[wasm_bindgen(js_name = "toVecu32")]
 pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
     arr.iter().map(|x| *x as u32).collect()
