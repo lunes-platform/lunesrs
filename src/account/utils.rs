@@ -21,6 +21,18 @@ pub fn hex_to_b58(hex: String) -> String {
     bs58::encode(from_str_hex(hex)).into_string()
 }
 
+/// #fromStrHex Function
+/// 
+/// Receive a Hexadecimal as String and converte u8 vector ( Vec<u8> )
+/// # Example
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::from_str_hex;
+/// 
+/// let result = from_str_hex("0a0a".to_string());
+/// assert_eq!(result, [10, 10]);
+/// ```
 #[wasm_bindgen(js_name = "fromStrHex")]
 pub fn from_str_hex(str_hex: String) -> Vec<u8> {
     match decode(str_hex) {
