@@ -40,6 +40,28 @@ pub mod generate {
         vecu32_to_hex(prvk)
     }
 
+    /// # Hash Seed of Public Key into a Hexadecimal number
+    /// 
+    /// The function transform hash seed of Public Key into a hexadecimal number.
+    /// 
+    /// # Example:
+    /// Basic Usage:
+    /// 
+    /// ```rust
+    /// use lunesrs::account::generate::to_public_key_hex;
+    /// use lunesrs::account::utils::from_str_hex;
+    /// 
+    /// 
+    /// let prvk = from_str_hex(
+    /// "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
+    /// );
+    /// let output = to_public_key_hex(prvk);
+    /// assert_eq!(
+    /// output,
+    /// "1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575"
+    /// );
+    /// ```
+
     #[wasm_bindgen(js_name = "toPublicKeyHex")]
     pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
         let pubk = KeyPair::new(Some(to_vecu32(hash_seed))).pubk;
