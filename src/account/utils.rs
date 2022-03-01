@@ -8,7 +8,6 @@ pub const ADDRESS_CHECKSUM_LENGTH: u8 = 4;
 pub const ADDRESS_HASH_LENGTH: u8 = 20;
 pub const ADDRESS_LENGTH: u8 = 1 + 1 + ADDRESS_CHECKSUM_LENGTH + ADDRESS_HASH_LENGTH;
 
-
 /// # b58ToVec Function
 /// Use base 58
 /// Decode base58 input into vector (Vec<u8>)
@@ -88,7 +87,7 @@ pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
 ///
 /// The function transform a String into Vector with u32
 ///
-/// # Example
+/// # Example:
 /// Basic Usage:
 ///
 /// ```rust
@@ -97,7 +96,6 @@ pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
 ///
 /// let msg = str_to_vec32("hello e25519 axolotl".to_string());
 /// ```
-
 #[wasm_bindgen(js_name = "stringToVecu32")]
 pub fn str_to_vecu32(message: String) -> Vec<u32> {
     // message.as_bytes().iter().map(|x| *x as u32).collect()
