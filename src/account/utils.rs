@@ -46,6 +46,9 @@ pub fn from_str_hex(str_hex: String) -> Vec<u8> {
         ),
     }
 }
+/// # Choose a 3 random numbers
+/// 
+/// The function pick up a three random numbers in the range from 0 to 2048
 
 #[wasm_bindgen(js_name = "randomTripleNumber")]
 pub fn random_triple_number() -> Vec<u32> {
@@ -58,10 +61,18 @@ pub fn random_triple_number() -> Vec<u32> {
     vec![w1, w2, w3]
 }
 
+/// # Into a Vector with u32
+/// 
+/// Transform any function into a Vector with u32 only using this function
+
 #[wasm_bindgen(js_name = "toVecu32")]
 pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
     arr.iter().map(|x| *x as u32).collect()
 }
+
+/// # Into Vector with u8
+/// 
+/// Transform any function into a Vector with u8, only using this function
 
 #[wasm_bindgen(js_name = "toVecu8")]
 pub fn to_vecu8(arr: Vec<u32>) -> Vec<u8> {
@@ -73,11 +84,29 @@ pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
     encode(to_vecu8(vec))
 }
 
+/// # String into Vector with u32
+/// 
+/// The function transform a String into Vector with u32
+/// 
+/// # Example: 
+/// Basic Usage:
+/// 
+/// ```rust
+///
+/// use ed25519_axolotl::str_to_vec32;
+/// 
+/// let msg = str_to_vec32("hello e25519 axolotl".to_string());
+///  ```
+
 #[wasm_bindgen(js_name = "stringToVecu32")]
 pub fn str_to_vecu32(message: String) -> Vec<u32> {
     // message.as_bytes().iter().map(|x| *x as u32).collect()
     ed25519_axolotl::str_to_vec32(message)
 }
+
+/// # Vector u32 into String
+/// 
+/// The function transform a Vector with u32 into string
 
 #[wasm_bindgen(js_name = "vecu32ToString")]
 pub fn vecu32_to_str(message: Vec<u32>) -> String {

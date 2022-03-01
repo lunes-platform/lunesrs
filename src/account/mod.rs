@@ -40,6 +40,28 @@ pub mod generate {
         vecu32_to_hex(prvk)
     }
 
+    /// # Hash Seed of Public Key into a Hexadecimal number
+    /// 
+    /// The function transform hash seed of Public Key into a hexadecimal number.
+    /// 
+    /// # Example:
+    /// Basic Usage:
+    /// 
+    /// ```rust
+    /// use lunesrs::account::generate::to_public_key_hex;
+    /// use lunesrs::account::utils::from_str_hex;
+    /// 
+    /// 
+    /// let prvk = from_str_hex(
+    /// "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
+    /// );
+    /// let output = to_public_key_hex(prvk);
+    /// assert_eq!(
+    /// output,
+    /// "1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575"
+    /// );
+    /// ```
+
     #[wasm_bindgen(js_name = "toPublicKeyHex")]
     pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
         let pubk = KeyPair::new(Some(to_vecu32(hash_seed))).pubk;
@@ -100,6 +122,28 @@ pub mod generate {
 
         vecu8_to_hex([raw_addr, checksum].concat())
     }
+
+    /// # Hidden a Seed
+    /// 
+    /// Using two libs of criptography Blake2b32b, keccak256 
+    /// 
+    /// Pick up a seed and transform your hash(sha256) into a hexadecimal number
+    /// Concatenate a number of the Nonce, and seed, with this, transform into hexadecimal number
+    /// 
+    /// # Example:
+    /// 
+    /// Basic usage:
+    /// 
+    /// ```rust
+    /// use lunesrs::account::generate::hidden_seed;
+    /// 
+    /// let nonce = 0;
+    /// let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
+    ///
+    /// assert_eq!(
+    ///    hidden_seed(nonce, seed),
+    ///    "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460")
+    /// ```
 
     #[wasm_bindgen(js_name = "hiddenSeed")]
     pub fn hidden_seed(nonce: u32, seed: String) -> String {
