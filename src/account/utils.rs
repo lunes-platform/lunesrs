@@ -46,6 +46,9 @@ pub fn from_str_hex(str_hex: String) -> Vec<u8> {
         ),
     }
 }
+/// # Choose a 3 random numbers
+/// 
+/// The function pick up a three random numbers in the range from 0 to 2048
 
 #[wasm_bindgen(js_name = "randomTripleNumber")]
 pub fn random_triple_number() -> Vec<u32> {
