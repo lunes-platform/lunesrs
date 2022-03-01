@@ -202,7 +202,29 @@ pub mod validate {
     pub fn full_signature(private_key: Vec<u32>, msg: Vec<u32>) -> Vec<u32> {
         KeyPair::fast_signature(private_key, msg, Some(random_bytes(64)))
     }
-
+    
+    
+/// # validateSignature Function
+/// Receive public key, message and signature
+/// Verify if public key match with message and signature
+/// 
+/// # Example
+/// Basic usage:
+/// 
+/// ```   
+/// use lunesrs::account::validate::validate_signature;
+/// use lunesrs::account::validate::fast_signature;
+/// use ed25519_axolotl::str_to_vec32;
+/// use ed25519_axolotl::KeyPair;
+/// 
+/// let seed = vec![1; 32];
+/// let keys = KeyPair::new(Some(seed));
+/// let msg = str_to_vec32("hello lunes".to_string());
+/// 
+/// let signature = fast_signature(keys.prvk, msg.clone());
+/// let response = validate_signature(keys.pubk, msg, signature);
+/// assert_eq!(response, true);
+/// ```  
     #[wasm_bindgen(js_name = "validateSignature")]
     pub fn validate_signature(
         public_key: Vec<u32>,
