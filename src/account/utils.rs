@@ -81,6 +81,20 @@ pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
     encode(to_vecu8(vec))
 }
 
+/// # String into Vector with u32
+/// 
+/// The function transform a String into Vector with u32
+/// 
+/// # Example: 
+/// Basic Usage:
+/// 
+/// ```rust
+///
+/// use ed25519_axolotl::str_to_vec32;
+/// 
+/// let msg = str_to_vec32("hello e25519 axolotl".to_string());
+///  ```
+
 #[wasm_bindgen(js_name = "stringToVecu32")]
 pub fn str_to_vecu32(message: String) -> Vec<u32> {
     // message.as_bytes().iter().map(|x| *x as u32).collect()
