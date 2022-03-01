@@ -41,34 +41,48 @@ pub mod generate {
     }
 
     /// # Hash Seed of Public Key into a Hexadecimal number
-    /// 
+    ///
     /// The function transform hash seed of Public Key into a hexadecimal number.
-    /// 
+    ///
     /// # Example:
     /// Basic Usage:
-    /// 
+    ///
     /// ```rust
     /// use lunesrs::account::generate::to_public_key_hex;
     /// use lunesrs::account::utils::from_str_hex;
-    /// 
-    /// 
+    ///
     /// let prvk = from_str_hex(
-    /// "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
+    ///     "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
     /// );
     /// let output = to_public_key_hex(prvk);
     /// assert_eq!(
-    /// output,
-    /// "1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575"
+    ///     output,
+    ///     "1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575"
     /// );
     /// ```
-
     #[wasm_bindgen(js_name = "toPublicKeyHex")]
     pub fn to_public_key_hex(hash_seed: Vec<u8>) -> String {
         let pubk = KeyPair::new(Some(to_vecu32(hash_seed))).pubk;
         vecu32_to_hex(pubk)
     }
 
-    #[wasm_bindgen(js_name = "toAddressHex")]
+    /// # toAddressHex Function
+    /// Receive version, blockchain (chain) and publick key and return a address hexadecimal
+    ///
+    /// # Example
+    /// Basic usage:
+    ///
+    /// ```
+    /// use lunesrs::account::utils::from_str_hex;
+    /// use lunesrs::account::generate::to_address_hex;
+    ///
+    /// let pubk = from_str_hex(
+    ///     "538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string()
+    /// );
+    /// let output = to_address_hex(1, 1, pubk);
+    /// assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
+    /// ```
+     #[wasm_bindgen(js_name = "toAddressHex")]
     pub fn to_address_hex(version: u8, chain: u8, public_key: Vec<u8>) -> String {
         let raw_addr = {
             let mut pubk = match Blake2bVar::new(32) {
@@ -110,25 +124,26 @@ pub mod generate {
     }
 
     /// # Hidden a Seed
-    /// 
-    /// Using two libs of criptography Blake2b32b, keccak256 
-    /// 
+    ///
+    /// Using two libs of criptography Blake2b32b, keccak256
+    ///
     /// Pick up a seed and transform your hash(sha256) into a hexadecimal number
     /// Concatenate a number of the Nonce, and seed, with this, transform into hexadecimal number
-    /// 
+    ///
     /// # Example:
-    /// 
+    ///
     /// Basic usage:
-    /// 
+    ///
     /// ```rust
     /// use lunesrs::account::generate::hidden_seed;
-    /// 
+    ///
     /// let nonce = 0;
     /// let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
     ///
     /// assert_eq!(
     ///    hidden_seed(nonce, seed),
-    ///    "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460")
+    ///    "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460"
+    /// );
     /// ```
 
     #[wasm_bindgen(js_name = "hiddenSeed")]

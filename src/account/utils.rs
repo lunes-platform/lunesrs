@@ -12,13 +12,13 @@ pub const ADDRESS_LENGTH: u8 = 1 + 1 + ADDRESS_CHECKSUM_LENGTH + ADDRESS_HASH_LE
 /// # b58ToVec Function
 /// Use base 58
 /// Decode base58 input into vector (Vec<u8>)
-/// 
+///
 /// # Example
 /// Basic usage:
-/// 
+///
 /// ```
 /// use lunesrs::account::utils::b58_to_vec;
-/// 
+///
 /// let input = "2Ej3vQ".to_string();
 /// let output = b58_to_vec(input);
 /// assert_eq!(output, [48, 97, 48, 97]);
@@ -47,7 +47,7 @@ pub fn from_str_hex(str_hex: String) -> Vec<u8> {
     }
 }
 /// # Choose a 3 random numbers
-/// 
+///
 /// The function pick up a three random numbers in the range from 0 to 2048
 
 #[wasm_bindgen(js_name = "randomTripleNumber")]
@@ -62,7 +62,7 @@ pub fn random_triple_number() -> Vec<u32> {
 }
 
 /// # Into a Vector with u32
-/// 
+///
 /// Transform any function into a Vector with u32 only using this function
 
 #[wasm_bindgen(js_name = "toVecu32")]
@@ -71,7 +71,7 @@ pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
 }
 
 /// # Into Vector with u8
-/// 
+///
 /// Transform any function into a Vector with u8, only using this function
 
 #[wasm_bindgen(js_name = "toVecu8")]
@@ -85,18 +85,18 @@ pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
 }
 
 /// # String into Vector with u32
-/// 
+///
 /// The function transform a String into Vector with u32
-/// 
-/// # Example: 
+///
+/// # Example
 /// Basic Usage:
-/// 
+///
 /// ```rust
 ///
 /// use ed25519_axolotl::str_to_vec32;
-/// 
+///
 /// let msg = str_to_vec32("hello e25519 axolotl".to_string());
-///  ```
+/// ```
 
 #[wasm_bindgen(js_name = "stringToVecu32")]
 pub fn str_to_vecu32(message: String) -> Vec<u32> {
@@ -105,7 +105,7 @@ pub fn str_to_vecu32(message: String) -> Vec<u32> {
 }
 
 /// # Vector u32 into String
-/// 
+///
 /// The function transform a Vector with u32 into string
 
 #[wasm_bindgen(js_name = "vecu32ToString")]
