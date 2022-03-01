@@ -34,6 +34,28 @@ pub mod generate {
     use tiny_keccak::{Hasher, Keccak};
     use wasm_bindgen::prelude::wasm_bindgen;
 
+    /// # Hash Seed of Private Key into a Hexadecimal number
+    ///
+    /// The function convert hash seed of Private key into a hexadecimal number
+    ///
+    /// # Example:
+    ///
+    /// Basic Usage:
+    ///
+    /// ```rust
+    /// use lunesrs::account::generate::to_private_key_hex;
+    /// use lunesrs::account::utils::from_str_hex;
+    ///
+    /// let hash_seed = from_str_hex(
+    /// "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
+    /// );
+    /// let output = to_private_key_hex(hash_seed);
+    ///
+    /// assert_eq!(
+    ///    output,
+    ///    "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460"
+    /// );
+    /// ```
     #[wasm_bindgen(js_name = "toPrivateKeyHex")]
     pub fn to_private_key_hex(hash_seed: Vec<u8>) -> String {
         let prvk = KeyPair::new(Some(to_vecu32(hash_seed))).prvk;
@@ -42,9 +64,10 @@ pub mod generate {
 
     /// # Hash Seed of Public Key into a Hexadecimal number
     ///
-    /// The function transform hash seed of Public Key into a hexadecimal number.
+    /// The function transform hash seed of Public Key into a hexadecimal number
     ///
     /// # Example:
+    ///
     /// Basic Usage:
     ///
     /// ```rust
@@ -55,6 +78,7 @@ pub mod generate {
     ///     "a04211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
     /// );
     /// let output = to_public_key_hex(prvk);
+    ///
     /// assert_eq!(
     ///     output,
     ///     "1c6924c7246f785f98d0d727a1474eedc8a047d1b1668caa38ce09d6e3267575"
@@ -67,12 +91,14 @@ pub mod generate {
     }
 
     /// # toAddressHex Function
+    ///
     /// Receive version, blockchain (chain) and publick key and return a address hexadecimal
     ///
-    /// # Example
+    /// # Example:
+    ///
     /// Basic usage:
     ///
-    /// ```
+    /// ```rust
     /// use lunesrs::account::utils::from_str_hex;
     /// use lunesrs::account::generate::to_address_hex;
     ///
@@ -80,6 +106,7 @@ pub mod generate {
     ///     "538f37cfbc714c62bcbb150679ed72573877f77b6beb7f5d6f7db1feea07b666".to_string()
     /// );
     /// let output = to_address_hex(1, 1, pubk);
+    ///
     /// assert_eq!(output, "013146cc1229797733630bfa38be72ca6df585e8521fd44b5738");
     /// ```
     #[wasm_bindgen(js_name = "toAddressHex")]
@@ -125,10 +152,9 @@ pub mod generate {
 
     /// # Hidden a Seed
     ///
-    /// Using two libs of criptography Blake2b32b, keccak256
-    ///
-    /// Pick up a seed and transform your hash(sha256) into a hexadecimal number
-    /// Concatenate a number of the Nonce, and seed, with this, transform into hexadecimal number
+    /// Using two libs of criptography Blake2b32b, keccak256,Pick up a seed and
+    /// transform your hash(sha256) into a hexadecimal number; Concatenate a
+    /// number of the Nonce, and seed, with this, transform into hexadecimal number
     ///
     /// # Example:
     ///
@@ -163,9 +189,12 @@ pub mod validate {
     use wasm_bindgen::prelude::wasm_bindgen;
 
     /// # Validate Address Function
-    /// Receive a Blockchain Id(0 for testnet, 1 for mainnet) and address and return a boolean result
+    ///
+    /// Receive a Blockchain Id(0 for testnet, 1 for mainnet) and address and
+    /// return a boolean result
     ///
     /// # Example:
+    ///
     /// Basic usage:
     ///
     /// ```rust
@@ -177,12 +206,14 @@ pub mod validate {
     /// let hexadecimal_address = from_str_hex(
     ///     "01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0".to_string()
     /// );
+    ///
     /// assert_eq!(validate_address(testnet_id, hexadecimal_address), true);
     ///
     /// let mainnet_id = 1;
     /// let b58_address = b58_to_vec(
     ///     "37nX3hdCt1GWeSsAMNFmWgbQWZZhbvBG3mX".to_string()
     /// );
+    ///
     /// assert_eq!(validate_address(mainnet_id, b58_address), true);
     /// ```
     #[wasm_bindgen(js_name = "validateAddress")]
@@ -210,15 +241,17 @@ pub mod validate {
         }
     }
 
-    /// #  fastSignature Funcion
-    /// Receive private key and message and return result
-    /// Keypair function receive fastSignature with public key and private key
-    /// Return a randomized result
+    /// #  fastSignature Function
     ///
-    /// # Example
+    /// Receive private key and message and return result, Keypair function 
+    /// receive fastSignature with public key and private key, return a 
+    /// randomized result
+    ///
+    /// # Example:
+    ///
     /// Basic usage:
     ///
-    /// ```
+    /// ```rust
     /// use lunesrs::account::validate::fast_signature;
     /// use ed25519_axolotl::str_to_vec32;
     /// use ed25519_axolotl::KeyPair;
@@ -227,6 +260,7 @@ pub mod validate {
     ///
     /// let msg = str_to_vec32("testing other message in signature".to_string());
     /// let signature = fast_signature(keys.prvk, msg.clone());
+    ///
     /// assert_eq!(KeyPair::verify(keys.pubk, msg, signature), true)
     /// ```
     #[wasm_bindgen(js_name = "fastSignature")]
@@ -235,10 +269,11 @@ pub mod validate {
     }
 
     /// # fullSignature Function
-    /// Receive a private_key and message
-    /// Return a randomized vector as result
     ///
-    /// # Example
+    /// Receive a private_key and message, return a randomized vector as result
+    ///
+    /// # Example:
+    ///
     /// Basic usage:
     ///
     /// ```rust
@@ -260,10 +295,12 @@ pub mod validate {
     }
 
     /// # validateSignature Function
-    /// Receive public key, message and signature
-    /// Verify if public key match with message and signature
     ///
-    /// # Example
+    /// Receive public key, message and signature, verify if public key
+    /// match with message and signature
+    ///
+    /// # Example:
+    ///
     /// Basic usage:
     ///
     /// ```rust
@@ -278,6 +315,7 @@ pub mod validate {
     ///
     /// let signature = fast_signature(keys.prvk, msg.clone());
     /// let response = validate_signature(keys.pubk, msg, signature);
+    ///
     /// assert_eq!(response, true);
     /// ```
     #[wasm_bindgen(js_name = "validateSignature")]
