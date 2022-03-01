@@ -145,7 +145,6 @@ pub mod generate {
     ///    "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460"
     /// );
     /// ```
-
     #[wasm_bindgen(js_name = "hiddenSeed")]
     pub fn hidden_seed(nonce: u32, seed: String) -> String {
         to_sha256_then_hex(from_str_hex(to_blake2b32b_then_keccak256_then_hex(
@@ -164,7 +163,7 @@ pub mod validate {
     use wasm_bindgen::prelude::wasm_bindgen;
 
     /// # Validate Address Function
-    /// Receive a Blockchain Id ( chain id  = (0 -> testnet 1 -> main net )) and address and return a boolean result
+    /// Receive a Blockchain Id(0 for testnet, 1 for mainnet) and address and return a boolean result
     ///
     /// # Example:
     /// Basic usage:
@@ -175,14 +174,17 @@ pub mod validate {
     /// use lunesrs::account::utils::b58_to_vec;
     ///
     /// let testnet_id = 0;
-    /// let hexadecimal_address =  from_str_hex("01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0".to_string());
+    /// let hexadecimal_address = from_str_hex(
+    ///     "01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0".to_string()
+    /// );
     /// assert_eq!(validate_address(testnet_id, hexadecimal_address), true);
     ///
     /// let mainnet_id = 1;
-    /// let b58_address =   b58_to_vec("37nX3hdCt1GWeSsAMNFmWgbQWZZhbvBG3mX".to_string());
+    /// let b58_address = b58_to_vec(
+    ///     "37nX3hdCt1GWeSsAMNFmWgbQWZZhbvBG3mX".to_string()
+    /// );
     /// assert_eq!(validate_address(mainnet_id, b58_address), true);
     /// ```
-
     #[wasm_bindgen(js_name = "validateAddress")]
     pub fn validate_address(chain_id: u8, address: Vec<u8>) -> bool {
         fn cut_in_half(addr: Vec<u8>, index: u8) -> (Vec<u8>, Vec<u8>) {
@@ -213,33 +215,52 @@ pub mod validate {
         KeyPair::fast_signature(private_key, msg, Some(random_bytes(64)))
     }
 
+    /// # fullSignature Function
+    /// Receive a private_key and message
+    /// Return a randomized vector as result
+    ///
+    /// # Example
+    /// Basic usage:
+    ///
+    /// ```rust
+    /// use ed25519_axolotl::KeyPair;
+    /// use ed25519_axolotl::str_to_vec32;
+    /// use lunesrs::account::validate::full_signature;
+    ///
+    /// let seed = vec![1; 32];
+    /// let keys = KeyPair::new(Some(seed));
+    ///
+    /// let msg = str_to_vec32("testing other message in signature".to_string());
+    /// let signature = full_signature(keys.prvk, msg.clone());
+    ///
+    /// assert_eq!(KeyPair::verify(keys.pubk, msg, signature), true)
+    /// ```
     #[wasm_bindgen(js_name = "fullSignature")]
     pub fn full_signature(private_key: Vec<u32>, msg: Vec<u32>) -> Vec<u32> {
         KeyPair::fast_signature(private_key, msg, Some(random_bytes(64)))
     }
-    
-    
-/// # validateSignature Function
-/// Receive public key, message and signature
-/// Verify if public key match with message and signature
-/// 
-/// # Example
-/// Basic usage:
-/// 
-/// ```   
-/// use lunesrs::account::validate::validate_signature;
-/// use lunesrs::account::validate::fast_signature;
-/// use ed25519_axolotl::str_to_vec32;
-/// use ed25519_axolotl::KeyPair;
-/// 
-/// let seed = vec![1; 32];
-/// let keys = KeyPair::new(Some(seed));
-/// let msg = str_to_vec32("hello lunes".to_string());
-/// 
-/// let signature = fast_signature(keys.prvk, msg.clone());
-/// let response = validate_signature(keys.pubk, msg, signature);
-/// assert_eq!(response, true);
-/// ```  
+
+    /// # validateSignature Function
+    /// Receive public key, message and signature
+    /// Verify if public key match with message and signature
+    ///
+    /// # Example
+    /// Basic usage:
+    ///
+    /// ```rust
+    /// use lunesrs::account::validate::validate_signature;
+    /// use lunesrs::account::validate::fast_signature;
+    /// use ed25519_axolotl::str_to_vec32;
+    /// use ed25519_axolotl::KeyPair;
+    ///
+    /// let seed = vec![1; 32];
+    /// let keys = KeyPair::new(Some(seed));
+    /// let msg = str_to_vec32("hello lunes".to_string());
+    ///
+    /// let signature = fast_signature(keys.prvk, msg.clone());
+    /// let response = validate_signature(keys.pubk, msg, signature);
+    /// assert_eq!(response, true);
+    /// ```
     #[wasm_bindgen(js_name = "validateSignature")]
     pub fn validate_signature(
         public_key: Vec<u32>,
