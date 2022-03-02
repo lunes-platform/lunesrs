@@ -33,6 +33,8 @@ CreateReportTests:
     stage: test
     script:
         - cargo test
+    needs:
+        - job: "BuildRelease"
     # artifacts:
     #     when: always
     #     reports:
@@ -44,7 +46,8 @@ TestNodeJsWebAssembly:
     stage: test
     script:
         - wasm-pack test --node
-
+    needs:
+        - job: "BuildPackage"
 
 # DeployPackage:
 #     before_script:
