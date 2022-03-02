@@ -7,7 +7,7 @@ stages:
 BuildDocs:
     stage: build
     script:
-        - cargo docs --no-deps
+        - cargo doc --no-deps
     artifacts:
         name: "lunesrs" 
         expose_as: "docs"
