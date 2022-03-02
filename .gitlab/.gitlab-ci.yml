@@ -4,6 +4,31 @@ stages:
     - test
     - build
 
+BuildRelease:
+    stage: build
+    script:
+        - cargo build --release
+    artifacts:
+        name: "lunesrs" 
+        expose_as: "pre-release"
+        when: always
+        paths:
+            - target/release/
+
+
+BuildPackage:
+    before_script:
+        - cargo install wasm-pack
+    stage: build
+    script:
+        - wasm-pack build --target nodejs
+    artifacts:
+        name: "lunesjs" 
+        expose_as: "pre-release"
+        when: always
+        paths:
+            - pkg/
+
 CreateReportTests:
     stage: test
     script:
@@ -13,25 +38,13 @@ CreateReportTests:
     #     reports:
     #         junit: report.xml
 
-# TestNodeJsWebAssembly:
-#     before_script:
-#         - cargo install wasm-pack
-#     stage: test
-#     script:
-#         - wasm-pack test --node
-
-BuildPackage:
+TestNodeJsWebAssembly:
     before_script:
         - cargo install wasm-pack
-    stage: build
+    stage: test
     script:
-        - wasm-pack build --target nodejs
-    artifacts:
-        name: "lunescrab wasm" 
-        expose_as: "pre-release"
-        when: always
-        paths:
-            - pkg/
+        - wasm-pack test --node
+
 
 # DeployPackage:
 #     before_script:
