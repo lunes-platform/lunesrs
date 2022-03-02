@@ -1,8 +1,8 @@
 image: rust
 
 stages:
-    - test
     - build
+    - test
 
 BuildRelease:
     stage: build
