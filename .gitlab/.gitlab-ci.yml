@@ -4,13 +4,24 @@ stages:
     - build
     - test
 
+BuildDocs:
+    stage: build
+    script:
+        - cargo docs --no-deps
+    artifacts:
+        name: "lunesrs" 
+        expose_as: "docs"
+        when: always
+        paths:
+            - target/docs/lunesrs/
+
 BuildRelease:
     stage: build
     script:
         - cargo build --release
     artifacts:
         name: "lunesrs" 
-        expose_as: "pre-release"
+        expose_as: "release"
         when: always
         paths:
             - target/release/
@@ -23,8 +34,8 @@ BuildPackage:
     script:
         - wasm-pack build --target nodejs
     artifacts:
-        name: "lunesjs" 
-        expose_as: "pre-release"
+        name: "lunesrs" 
+        expose_as: "lunesjs"
         when: always
         paths:
             - pkg/
@@ -54,7 +65,6 @@ TestNodeJsWebAssembly:
 #         - cargo install wasm-pack
 #     stage: deploy
 #     script:
-#         - cargo install wasm-pack
 #         - wasm-pack login -u $USR_NPM -p $PWD_NPM
 #         - wasm-pack build --target nodejs
 #         - wasm-pack publish
