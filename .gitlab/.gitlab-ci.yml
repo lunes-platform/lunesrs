@@ -40,7 +40,7 @@ BuildPackage:
         paths:
             - pkg/
 
-CreateReportTests:
+UnitTestRust:
     stage: test
     script:
         - cargo test
