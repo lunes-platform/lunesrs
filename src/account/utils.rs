@@ -9,17 +9,19 @@ pub const ADDRESS_HASH_LENGTH: u8 = 20;
 pub const ADDRESS_LENGTH: u8 = 1 + 1 + ADDRESS_CHECKSUM_LENGTH + ADDRESS_HASH_LENGTH;
 
 /// # b58ToVec Function
-/// Use base 58
-/// Decode base58 input into vector (Vec<u8>)
 ///
-/// # Example
+/// Use base 58 Decode input into vector (Vec<u8>)
+///
+/// # Example:
+///
 /// Basic usage:
 ///
-/// ```
+/// ```rust
 /// use lunesrs::account::utils::b58_to_vec;
 ///
 /// let input = "2Ej3vQ".to_string();
 /// let output = b58_to_vec(input);
+///
 /// assert_eq!(output, [48, 97, 48, 97]);
 /// ```
 #[wasm_bindgen(js_name = "b58ToVec")]
@@ -45,13 +47,24 @@ pub fn from_str_hex(str_hex: String) -> Vec<u8> {
         ),
     }
 }
+
 /// # Choose a 3 random numbers
 ///
 /// The function pick up a three random numbers in the range from 0 to 2048
-
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::random_triple_number;
+///
+/// let x = random_triple_number();
+/// assert_eq!(x.len(), 3);
+/// ```
 #[wasm_bindgen(js_name = "randomTripleNumber")]
 pub fn random_triple_number() -> Vec<u32> {
-    let word_count = 2048;
+    let word_count = 2048 - 1;
     let random = random_bytes(4);
     let x = random[3] + (random[2] << 8) + (random[1] << 16) + (random[0] << 24);
     let w1 = x % word_count;
@@ -63,7 +76,19 @@ pub fn random_triple_number() -> Vec<u32> {
 /// # Into a Vector with u32
 ///
 /// Transform any function into a Vector with u32 only using this function
-
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::to_vecu32;
+///
+/// let input = "lunes".as_bytes();
+/// let output = to_vecu32(input.to_vec());
+///
+/// assert_eq!(output, [108, 117, 110, 101, 115]);
+/// ```
 #[wasm_bindgen(js_name = "toVecu32")]
 pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
     arr.iter().map(|x| *x as u32).collect()
@@ -72,12 +97,40 @@ pub fn to_vecu32(arr: Vec<u8>) -> Vec<u32> {
 /// # Into Vector with u8
 ///
 /// Transform any function into a Vector with u8, only using this function
-
+///
+/// # Example:
+///
+/// Basic Usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::to_vecu8;
+///
+/// let input = [108, 117, 110, 101, 115];
+/// let output = to_vecu8(input.to_vec());
+///
+/// assert_eq!(output, [108, 117, 110, 101, 115]);
+/// ```
 #[wasm_bindgen(js_name = "toVecu8")]
 pub fn to_vecu8(arr: Vec<u32>) -> Vec<u8> {
     arr.iter().map(|x| *x as u8).collect()
 }
 
+/// # Vector with a u32 Function
+///
+/// The function transform a Vector with u32 into a Hexadecimal number
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::vecu32_to_hex;
+///
+/// let input: [u32; 4] = [9, 10, 11, 12];
+/// let output = vecu32_to_hex(input.to_vec());
+///
+/// assert_eq!(output, "090a0b0c")
+/// ```
 #[wasm_bindgen(js_name = "vecu32ToHex")]
 pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
     encode(to_vecu8(vec))
@@ -88,13 +141,16 @@ pub fn vecu32_to_hex(vec: Vec<u32>) -> String {
 /// The function transform a String into Vector with u32
 ///
 /// # Example:
+///
 /// Basic Usage:
 ///
 /// ```rust
+/// use lunesrs::account::utils::str_to_vecu32;
 ///
-/// use ed25519_axolotl::str_to_vec32;
+/// let input = "lunes".to_string();
+/// let output = str_to_vecu32(input);
 ///
-/// let msg = str_to_vec32("hello e25519 axolotl".to_string());
+/// assert_eq!(output, [108, 117, 110, 101, 115])
 /// ```
 #[wasm_bindgen(js_name = "stringToVecu32")]
 pub fn str_to_vecu32(message: String) -> Vec<u32> {
@@ -105,7 +161,19 @@ pub fn str_to_vecu32(message: String) -> Vec<u32> {
 /// # Vector u32 into String
 ///
 /// The function transform a Vector with u32 into string
-
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::vecu32_to_str;
+///
+/// let input: [u32; 5] = [108, 117, 110, 101, 115];
+/// let output = vecu32_to_str(input.to_vec());
+///
+/// assert_eq!(output, "lunes")
+/// ```
 #[wasm_bindgen(js_name = "vecu32ToString")]
 pub fn vecu32_to_str(message: Vec<u32>) -> String {
     ed25519_axolotl::vec32_to_str(&message)
