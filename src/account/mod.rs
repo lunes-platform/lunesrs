@@ -47,7 +47,7 @@ pub mod generate {
     /// use lunesrs::account::utils::from_str_hex;
     ///
     /// let hash_seed = from_str_hex(
-    /// "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
+    ///     "a34211e1159080cbf115cdd1108adb9b323018d1e34f2368fc66d54a3fa51460".to_string(),
     /// );
     /// let output = to_private_key_hex(hash_seed);
     ///
@@ -206,14 +206,13 @@ pub mod validate {
     /// let hexadecimal_address = from_str_hex(
     ///     "01302c2e5258dc5bccbb5c535944270f73b98f973926d12b5dc0".to_string()
     /// );
-    ///
     /// assert_eq!(validate_address(testnet_id, hexadecimal_address), true);
+    ///
     ///
     /// let mainnet_id = 1;
     /// let b58_address = b58_to_vec(
     ///     "37nX3hdCt1GWeSsAMNFmWgbQWZZhbvBG3mX".to_string()
     /// );
-    ///
     /// assert_eq!(validate_address(mainnet_id, b58_address), true);
     /// ```
     #[wasm_bindgen(js_name = "validateAddress")]
@@ -243,8 +242,8 @@ pub mod validate {
 
     /// #  fastSignature Function
     ///
-    /// Receive private key and message and return result, Keypair function 
-    /// receive fastSignature with public key and private key, return a 
+    /// Receive private key and message and return result, Keypair function
+    /// receive fastSignature with public key and private key, return a
     /// randomized result
     ///
     /// # Example:
