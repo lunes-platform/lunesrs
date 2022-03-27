@@ -32,6 +32,27 @@ pub fn b58_to_vec(base58: String) -> Vec<u8> {
     }
 }
 
+/// # Vec to Base58 Function
+///
+/// Use base 58 for Encode vec to string base58
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::vec_to_b58;
+///
+/// let input = vec![48, 97, 48, 97];
+/// let output = vec_to_b58(input);
+///
+/// assert_eq!(output, "2Ej3vQ".to_string());
+/// ```
+#[wasm_bindgen(js_name = "vecToB58")]
+pub fn vec_to_b58(vec: Vec<u8>) -> String {
+    bs58::encode(vec).into_string()
+}
+
 #[wasm_bindgen(js_name = "hexToB58")]
 pub fn hex_to_b58(hex: String) -> String {
     bs58::encode(from_str_hex(hex)).into_string()
@@ -177,6 +198,61 @@ pub fn str_to_vecu32(message: String) -> Vec<u32> {
 #[wasm_bindgen(js_name = "vecu32ToString")]
 pub fn vecu32_to_str(message: Vec<u32>) -> String {
     ed25519_axolotl::vec32_to_str(&message)
+}
+
+/// # Serialize Unsigned Integer
+///
+/// The function transform a u64 in Array of bytes
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::serialize_integer;
+/// let uinteger = 1528077600000;
+///
+/// assert_eq!(serialize_integer(uinteger), [0, 0, 1, 99, 200, 133, 197, 0]);
+/// assert_eq!(serialize_integer(1), [0, 0, 0, 0, 0, 0, 0, 1]);
+/// ```
+#[wasm_bindgen(js_name = "serializeUInteger")]
+pub fn serialize_integer(number: u64) -> Vec<u8> {
+    number.to_be_bytes().to_vec()
+}
+
+/// # Serialize String
+///
+/// The function transform a u64 in Array of bytes
+///
+/// # Example:
+///
+/// Basic usage:
+///
+/// ```rust
+/// use lunesrs::account::utils::serialize_string;
+/// let string = "E3ZpxkM2kvS78aFYG2xFfngchMgik4ogLLRa6CBJvVgz";
+///
+/// assert_eq!(
+///     serialize_string(string),
+///     [69, 51, 90, 112, 120, 107, 77, 50, 107, 118, 83, 55, 56, 97, 70, 89, 71, 50, 120, 70, 102, 110, 103, 99, 104, 77, 103, 105, 107, 52, 111, 103, 76, 76, 82, 97, 54, 67, 66, 74, 118, 86, 103, 122]
+/// );
+/// assert_eq!(
+///     serialize_string(""),
+///     [0]
+/// );
+/// ```
+#[wasm_bindgen(js_name = "serializeString")]
+pub fn serialize_string(token: &str) -> Vec<u8> {
+    if token == "" {
+        0u8.to_be_bytes().to_vec()
+    } else {
+        token.as_bytes().to_vec()
+    }
+}
+
+#[wasm_bindgen(js_name = "stringToB58")]
+pub fn str_to_b58(string: String) -> String {
+    bs58::encode(string).into_string()
 }
 
 pub fn int_to_hex(int: u32) -> String {

@@ -7,5 +7,4 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 
 # install rust dependencies
 RUN cargo install wasm-pack
-RUN cargo install cargo-watch
-RUN cargo install cargo-x
+RUN rustup component add rustfmt
