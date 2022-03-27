@@ -1,70 +1,51 @@
-image: rust
+image: lunesplatform/lunesrs:amd
 
 stages:
     - build
     - test
-
-BuildDocs:
-    stage: build
-    script:
-        - cargo doc --no-deps
-    artifacts:
-        name: "lunesrs" 
-        expose_as: "docs"
-        when: always
-        paths:
-            - target/docs/lunesrs/
+    - deploy
 
 BuildRelease:
     stage: build
     script:
         - cargo build --release
     artifacts:
-        name: "lunesrs" 
-        expose_as: "release"
+        expose_as: "new release lunesrs"
         when: always
         paths:
             - target/release/
 
-
-BuildPackage:
-    before_script:
-        - cargo install wasm-pack
+BuildWebAssembly:
     stage: build
     script:
         - wasm-pack build --target nodejs
     artifacts:
-        name: "lunesrs" 
-        expose_as: "lunesjs"
+        expose_as: "web assembly lunesrs"
         when: always
         paths:
             - pkg/
 
-UnitTestRust:
+TestRelease:
     stage: test
     script:
         - cargo test
     needs:
         - job: "BuildRelease"
-    # artifacts:
-    #     when: always
-    #     reports:
-    #         junit: report.xml
 
-TestNodeJsWebAssembly:
-    before_script:
-        - cargo install wasm-pack
+TestWebAssembly:
     stage: test
     script:
         - wasm-pack test --node
     needs:
-        - job: "BuildPackage"
+        - job: "BuildWebAssembly"
 
-# DeployPackage:
-#     before_script:
-#         - cargo install wasm-pack
-#     stage: deploy
-#     script:
-#         - wasm-pack login -u $USR_NPM -p $PWD_NPM
-#         - wasm-pack build --target nodejs
-#         - wasm-pack publish
+DeployNPM:
+    stage: deploy
+    script:
+        - wasm-pack login -u $USR_NPM -p $PWD_NPM
+        - wasm-pack publish
+    needs:
+        - job: "BuildWebAssembly"
+        - job: "TestWebAssembly"
+        - job: "BuildRelease"
+        - job: "TestRelease"
