@@ -32,13 +32,6 @@ TestRelease:
     needs:
         - job: "BuildRelease"
 
-TestWebAssembly:
-    stage: test
-    script:
-        - wasm-pack test --node
-    needs:
-        - job: "BuildWebAssembly"
-
 # DeployNPM:
 #     stage: deploy
 #     script:
@@ -46,6 +39,5 @@ TestWebAssembly:
 #         - wasm-pack publish
 #     needs:
 #         - job: "BuildWebAssembly"
-#         - job: "TestWebAssembly"
 #         - job: "BuildRelease"
 #         - job: "TestRelease"
