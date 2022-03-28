@@ -22,16 +22,15 @@ why was it modified?
 ```
 ### **Types**
 
-- **fixed** fixes a bug
-- **added** adds a new feature
-- **merged** solve a problem and merge in `main`
-- **refactored** does not add a feature or fix a bug
-- **deprecated** compatibility break
+- **fixed** Fix a bug
+- **added** Add a new feature
+- **removed** Remove a peace of code
+- **updated** Update any thing. e.g. feature, piece, refact
 
 ### **Semantic Version**
 
-- **merged** -> _Major_
-- **added** -> _Minor_
+- **added** -> _Major_
+- **updated** -> _Minor_
 - **fixed** -> _Patch_
 
 ---
