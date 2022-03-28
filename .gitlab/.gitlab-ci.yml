@@ -39,13 +39,13 @@ TestWebAssembly:
     needs:
         - job: "BuildWebAssembly"
 
-DeployNPM:
-    stage: deploy
-    script:
-        - wasm-pack login -u $USR_NPM -p $PWD_NPM
-        - wasm-pack publish
-    needs:
-        - job: "BuildWebAssembly"
-        - job: "TestWebAssembly"
-        - job: "BuildRelease"
-        - job: "TestRelease"
+# DeployNPM:
+#     stage: deploy
+#     script:
+#         - wasm-pack login -u $USR_NPM -p $PWD_NPM
+#         - wasm-pack publish
+#     needs:
+#         - job: "BuildWebAssembly"
+#         - job: "TestWebAssembly"
+#         - job: "BuildRelease"
+#         - job: "TestRelease"
