@@ -30,7 +30,7 @@ pub fn random_bytes(size: usize) -> Vec<u32> {
 }
 
 /**
-# Return a vector with 3 random numbers
+# Return a vector with *`3`* random numbers
 
 - The function takes three random numbers in the range from 0 to 2048
 
