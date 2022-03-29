@@ -1,3 +1,5 @@
+/// Functions low leval of cryptography
+pub mod crypto;
 /// Functions for get vetor of random numbers
 pub mod random;
 /// Functions for serialize string and integers
