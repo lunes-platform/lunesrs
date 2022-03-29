@@ -81,6 +81,6 @@ pub fn to_blake2b32b(message: Vec<u8>) -> Vec<u8> {
             hash.update(&message);
             hash.finalize_boxed().to_vec()
         }
-        Err(e) => panic!("ERROR: {}", e),
+        Err(e) => panic!("{}", e),
     }
 }

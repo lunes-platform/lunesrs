@@ -1,3 +1,5 @@
+/// Functions for encode and decode with base58
+pub mod base58;
 /// Functions low leval of cryptography
 pub mod crypto;
 /// Functions for get vetor of random numbers
