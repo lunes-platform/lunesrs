@@ -22,55 +22,40 @@
 //!
 //! ## 🏗 Archtecture
 //!
-//! ```rust
-//! mod utils {
-//!     pub mod random {
-//!         fn randomTripleNumber -> Vec<u32>
-//!         fn randomBytes(usize) -> Vec<u32>
-//!     }
-//!     pub mod strings {
-//!         fn stringToB58
-//!         fn stringToVecu32
-//!         fn vecu32ToString
-//!         fn stringToUint32Array
-//!         fn uint32ArrayToString
-//!     }
-//!     pub mod base58 {
-//!         fn b58ToVec
-//!         fn vecToB58
-//!     }
-//!     pub mod hexadecimals {
-//!         fn fromStrHex
-//!         fn hexToB58
-//!         fn vecu32ToHex
-//!     }
-//!     pub mod vectors {
-//!         fn toVecu32(Vec<u8>) -> Vec<u32>
-//!         fn toVecu8(Vec<u32>) -> Vec<u8>
-//!     }
-//!     mod serialize {
-//!         fn serializeString(String) -> Vec<u8>
-//!         fn serializeUInteger(u64) -> Vec<u8>
-//!     }
-//! }
-//! mod account {
-//!     mod signature {
-//!         fn validateAddress
-//!         fn validateSignature
-//!         fn decode_message
-//!         fn fullSignature
-//!         fn fastSignature
-//!     }
-//!     mod crypto {
-//!         fn toPrivateKeyHex
-//!         fn toPublicKeyHex
-//!         fn toAddressHex
-//!         fn hiddenSeed
-//!         fn keypair_new
-//!         fn keypair_privateKey
-//!         fn keypair_publiKey
-//!     }
-//! }
+//! - **Utils**
+//!     - Serialize
+//!         - serializeString *String* -> *Vec<u8>*
+//!         - serializeUInteger *u64* -> *Vec<u8>*
+//!
+//!      - Crypto
+//!         - to_blake2b32b *Vec<u8>* -> *Vec<u8>*
+//!         - to_keccak256 *Vec<u8>* -> *Vec<u8>*
+//!         - to_sha256 *Vec<u8>* -> *Vec<u8>*
+//!
+//!      - Random
+//!         - randomTripleNumber -> *Vec<u32>*
+//!         - randomBytes *usize* -> *Vec<u32>*
+//!
+//!      - Vectors
+//!         - toVecu32 *Vec<u8>* -> *Vec<u32>*
+//!         - toVecu8 *Vec<u32>* -> *Vec<u8>*
+//!
+//!      - Base58
+//!         - vecToB58 *Vec<u8>* -> *String*
+//!         - b58ToVec *String* -> *Vec<u8>*
+//! - **Account**
+//!     - Signature
+//!         - validateSignature
+//!         - validateAddress
+//!         - decodeMessage
+//!         - fullSignature
+//!         - fastSignature
+//!
+//!      - Wallet
+//!         - toPrivateKey
+//!         - toPublicKey
+//!         - hiddenSeed
+//!         - toAddress
 //!
 
 /// Functions for wallets for Lunes Blockchain
