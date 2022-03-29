@@ -1,4 +1,5 @@
 use lunesrs::utils::random::{random_bytes, random_triple_number};
+use wasm_bindgen_test::wasm_bindgen_test;
 
 #[test]
 fn verify_bytes() {
@@ -10,6 +11,7 @@ fn verify_bytes() {
 }
 
 #[test]
+#[wasm_bindgen_test]
 fn verify_triple() {
     assert_eq!(3, random_triple_number().len());
     assert_eq!(

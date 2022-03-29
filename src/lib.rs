@@ -21,7 +21,6 @@
 //! [Telescope](https:blockchain.lunes.io/telescope)
 //!
 
-
 /// Functions for wallets for Lunes Blockchain
 pub mod account;
 /// Utils functions

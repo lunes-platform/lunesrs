@@ -1,33 +1,4 @@
-use rand::Rng;
 use wasm_bindgen::prelude::wasm_bindgen;
-
-/**
-# Return a vector with *`n`* random numbers
-
-- The function takes three random numbers in the range from 0 to 255
-
-## Example
-
-```rust
-use lunesrs::utils::random::random_bytes;
-
-let x = [1;32];
-assert_eq!(x.len(), random_bytes(32).len());
-
-assert_eq!(
-    true,
-    // 0 <= x <= 255
-    random_bytes(10000).iter().all(|x| x.ge(&&0) && x.le(&&255))
-);
-```
-*/
-
-pub fn random_bytes(size: usize) -> Vec<u32> {
-    let mut rng = rand::thread_rng();
-    (0..size)
-        .map(|_| rng.gen_range(0..255))
-        .collect::<Vec<u32>>()
-}
 
 /**
 # Return a vector with *`3`* random numbers
@@ -58,8 +29,6 @@ assert_eq!(
         .all(|x| x.le(&&2048) && x.gt(&&0)),
     true
 );
-
-
 ```
 */
 #[wasm_bindgen(js_name = "randomTripleNumber")]
@@ -71,4 +40,34 @@ pub fn random_triple_number() -> Vec<u32> {
     let w2 = (((x / word_count) >> 0) + w1) % word_count;
     let w3 = (((((x / word_count) >> 0) / word_count) >> 0) + w2) % word_count;
     vec![w1, w2, w3]
+}
+
+/**
+# Return a vector with *`n`* random numbers
+
+- The function takes three random numbers in the range from 0 to 255
+
+## Example
+
+```rust
+use lunesrs::utils::random::random_bytes;
+
+let x = [1;32];
+assert_eq!(x.len(), random_bytes(32).len());
+
+assert_eq!(
+    true,
+    // 0 <= x <= 255
+    random_bytes(10000).iter().all(|x| x.ge(&&0) && x.le(&&255))
+);
+```
+*/
+
+pub fn random_bytes(size: usize) -> Vec<u32> {
+    use rand::Rng;
+
+    let mut rng = rand::thread_rng();
+    (0..size)
+        .map(|_| rng.gen_range(0..255))
+        .collect::<Vec<u32>>()
 }

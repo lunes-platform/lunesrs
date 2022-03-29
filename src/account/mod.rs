@@ -1,3 +1,6 @@
+/// Generate private and public keys
+mod crypto;
+
 wasm_bindgen_test::wasm_bindgen_test_configure!(run_in_browser);
 
 pub mod utils;
