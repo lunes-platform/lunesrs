@@ -1,9 +1,10 @@
-use lunesrs::utils::serialize::{serialize_integer, serialize_string};
 use wasm_bindgen_test::wasm_bindgen_test;
 
 #[test]
 #[wasm_bindgen_test]
 fn verify_integer_serialization() {
+    use lunesrs::utils::serialize::serialize_integer;
+
     let uinteger = 1528077600000;
 
     assert_eq!(serialize_integer(uinteger), [0, 0, 1, 99, 200, 133, 197, 0]);
@@ -13,6 +14,8 @@ fn verify_integer_serialization() {
 #[test]
 #[wasm_bindgen_test]
 fn verify_string_serialization() {
+    use lunesrs::utils::serialize::serialize_string;
+
     let string = "E3ZpxkM2kvS78aFYG2xFfngchMgik4ogLLRa6CBJvVgz";
 
     assert_eq!(serialize_string(""), [0]);
