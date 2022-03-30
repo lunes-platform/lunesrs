@@ -2,7 +2,7 @@
 name = "lunesrs"
 readme = "README.md"
 edition = "2021"
-version = "1.8.0"
+version = "1.8.1"
 license = "Apache-2.0"
 authors = ["Lunes Platform <development@lunes.io>"]
 repository = "https://github.com/lunes-platform/lunesrs"
@@ -12,6 +12,7 @@ categories = ["algorithms", "cryptography::cryptocurrencies", "cryptography", "w
 
 [dependencies]
 tiny-keccak = { version = "2.0.0", features = ["keccak"] }
+getrandom = { version = "0.2", features = ["js"] }
 wasm-bindgen-test = "0.3.29"
 ed25519-axolotl = "1.7.1"
 wasm-bindgen = "0.2.78"
