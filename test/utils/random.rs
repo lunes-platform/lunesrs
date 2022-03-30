@@ -2,7 +2,7 @@ use wasm_bindgen_test::wasm_bindgen_test;
 
 #[test]
 fn verify_bytes() {
-    use lunesrs::utils::random::random_bytes;
+    use ed25519_axolotl::utils::random::random_bytes;
 
     let x = [1; 32];
     assert_eq!(x.len(), random_bytes(32).len());

@@ -16,9 +16,9 @@ fn verify_integer_serialization() {
 fn verify_string_serialization() {
     use lunesrs::utils::serialize::serialize_string;
 
-    let string = "E3ZpxkM2kvS78aFYG2xFfngchMgik4ogLLRa6CBJvVgz";
+    let string = "E3ZpxkM2kvS78aFYG2xFfngchMgik4ogLLRa6CBJvVgz".to_string();
 
-    assert_eq!(serialize_string(""), [0]);
+    assert_eq!(serialize_string("".to_string()), [0]);
     assert_eq!(
         serialize_string(string),
         [

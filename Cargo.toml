@@ -10,19 +10,10 @@ description = "Library for communication with nodes in mainnet or testnet of the
 keywords = ["ed25519-axolotl", "lunes", "cryptography", "cryptocurrencies", "wasm"]
 categories = ["algorithms", "cryptography::cryptocurrencies", "cryptography", "wasm"]
 
-[package.metadata.x]
-ci = """
-cargo fmt &&
-cargo build --release &&
-cargo test &&
-wasm-pack build --target nodejs &&
-wasm-pack test --node
-"""
-
 [dependencies]
 tiny-keccak = { version = "2.0.0", features = ["keccak"] }
 wasm-bindgen-test = "0.3.29"
-ed25519-axolotl = "1.5.0"
+ed25519-axolotl = "1.7.1"
 wasm-bindgen = "0.2.78"
 blake2 = "0.10.2"
 sha2 = "0.10.1"

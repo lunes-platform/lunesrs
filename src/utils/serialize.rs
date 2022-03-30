@@ -42,9 +42,9 @@ pub fn serialize_integer(number: u64) -> Vec<u8> {
 ```rust
 use lunesrs::utils::serialize::serialize_string;
 
-let string = "E3ZpxkM2kvS78aFYG2xFfngchMgik4ogLLRa6CBJvVgz";
+let string = "E3ZpxkM2kvS78aFYG2xFfngchMgik4ogLLRa6CBJvVgz".to_string();
 
-assert_eq!(serialize_string(""), [0]);
+assert_eq!(serialize_string("".to_string()), [0]);
 assert_eq!(
     serialize_string(string),
     [
@@ -56,7 +56,7 @@ assert_eq!(
 ```
 */
 #[wasm_bindgen(js_name = "serializeString")]
-pub fn serialize_string(token: &str) -> Vec<u8> {
+pub fn serialize_string(token: String) -> Vec<u8> {
     if token == "" {
         0u8.to_be_bytes().to_vec()
     } else {

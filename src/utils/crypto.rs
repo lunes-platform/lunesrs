@@ -9,11 +9,11 @@
 use lunesrs::utils::crypto::to_sha256;
 ```
 */
-pub fn to_sha256(raw_hash_seed: Vec<u8>) -> Vec<u8> {
+pub fn to_sha256(message: Vec<u8>) -> Vec<u8> {
     use sha2::{Digest, Sha256};
 
     let mut hasher = Sha256::new();
-    hasher.update(&raw_hash_seed);
+    hasher.update(&message);
 
     hasher.finalize().to_vec()
 }
@@ -38,13 +38,13 @@ let response = vec![
 assert_eq!(output, response);
 ```
 */
-pub fn to_keccak256(data: Vec<u8>) -> Vec<u8> {
+pub fn to_keccak256(message: Vec<u8>) -> Vec<u8> {
     use tiny_keccak::{Hasher, Keccak};
 
     let mut k256 = Keccak::v256();
     let mut result = [0; 32];
 
-    k256.update(&data);
+    k256.update(&message);
     k256.finalize(&mut result);
 
     result.to_vec()
