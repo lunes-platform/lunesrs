@@ -1,4 +1,4 @@
-use lunesrs::account::wallet::to_public_key;
+use lunesrs::wallet::assembly::to_public_key;
 
 use wasm_bindgen_test::wasm_bindgen_test;
 

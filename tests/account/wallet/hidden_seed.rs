@@ -3,7 +3,7 @@ use wasm_bindgen_test::wasm_bindgen_test;
 #[test]
 #[wasm_bindgen_test]
 fn multiple_hidden_seed() {
-    use lunesrs::account::wallet::hidden_seed;
+    use lunesrs::wallet::assembly::hidden_seed;
 
     let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
     let hash_seed = [
@@ -37,7 +37,7 @@ fn multiple_hidden_seed() {
 #[test]
 #[wasm_bindgen_test]
 fn single_hidden_seed() {
-    use lunesrs::account::wallet::hidden_seed;
+    use lunesrs::wallet::assembly::hidden_seed;
 
     let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
     let hidded_seed = hidden_seed(0, seed);

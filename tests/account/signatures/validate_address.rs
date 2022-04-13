@@ -3,7 +3,7 @@ use wasm_bindgen_test::wasm_bindgen_test;
 #[test]
 #[wasm_bindgen_test]
 fn addr_validation() {
-    use lunesrs::account::signatures::validate_address;
+    use lunesrs::wallet::signatures::validate_address;
     use lunesrs::utils::base58::b58_to_vec;
 
     let mainnet = 1;

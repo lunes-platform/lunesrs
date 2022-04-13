@@ -27,8 +27,8 @@ true == wasm.validateSignature(publicKey, message, signature)
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::signatures::{full_signature, validate_signature};
-use lunesrs::account::wallet::{to_private_key, to_public_key};
+use lunesrs::wallet::signatures::{full_signature, validate_signature};
+use lunesrs::wallet::assembly::{to_private_key, to_public_key};
 
 let prvk = to_private_key(vec![1; 32]);
 let pubk = to_public_key(prvk.clone());
@@ -75,8 +75,8 @@ true == wasm.validateSignature(publicKey, message, signature)
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::signatures::{fast_signature, validate_signature};
-use lunesrs::account::wallet::{to_private_key, to_public_key};
+use lunesrs::wallet::signatures::{fast_signature, validate_signature};
+use lunesrs::wallet::assembly::{to_private_key, to_public_key};
 
 let prvk = to_private_key(vec![1; 32]);
 let pubk = to_public_key(prvk.clone());
@@ -120,8 +120,8 @@ true == wasm.validateSignature(publicKey, message, signature)
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::signatures::{fast_signature, validate_signature};
-use lunesrs::account::wallet::{to_private_key, to_public_key};
+use lunesrs::wallet::signatures::{fast_signature, validate_signature};
+use lunesrs::wallet::assembly::{to_private_key, to_public_key};
 
 let prvk = to_private_key(vec![1; 32]);
 let pubk = to_public_key(prvk.clone());
@@ -166,7 +166,7 @@ true == wasm.validateAddress(mainnet, addr)
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::signatures::validate_address;
+use lunesrs::wallet::signatures::validate_address;
 use lunesrs::utils::base58::b58_to_vec;
 
 let mainnet = 1;
@@ -177,7 +177,7 @@ assert_eq!(true, validate_address(mainnet, addr));
 */
 #[wasm_bindgen(js_name = "validateAddress")]
 pub fn validate_address(chain_id: u8, address: Vec<u8>) -> bool {
-    use crate::account::{ADDRESS_CHECKSUM_LENGTH, ADDRESS_LENGTH, ADDRESS_VERSION};
+    use crate::wallet::{ADDRESS_CHECKSUM_LENGTH, ADDRESS_LENGTH, ADDRESS_VERSION};
 
     let (address_left, checksum) = {
         let x = address.len() - ADDRESS_CHECKSUM_LENGTH as usize;

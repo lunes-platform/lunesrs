@@ -1,4 +1,4 @@
-use lunesrs::account::wallet::to_address;
+use lunesrs::wallet::assembly::to_address;
 use wasm_bindgen_test::wasm_bindgen_test;
 
 #[test]

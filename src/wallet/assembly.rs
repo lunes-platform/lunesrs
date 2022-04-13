@@ -21,7 +21,7 @@ hiddedSeed == [
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::wallet::hidden_seed;
+use lunesrs::wallet::assembly::hidden_seed;
 
 let seed = "scrub guard swim catch range upon dawn ensure segment alpha sentence spend effort bar benefit".to_string();
 let hidded_seed = hidden_seed(0, seed);
@@ -66,7 +66,7 @@ privateKey == [
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::wallet::to_private_key;
+use lunesrs::wallet::assembly::to_private_key;
 
 let hidden_seed: Vec<u8> = vec![
     163, 66, 17, 225, 21, 144, 128, 203, 241, 21, 205, 209, 16, 138, 219, 155, 50, 48, 24, 209,
@@ -116,7 +116,7 @@ publicKey == [
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::wallet::to_public_key;
+use lunesrs::wallet::assembly::to_public_key;
 
 let private_key: Vec<u8> = vec![
     160, 66, 17, 225, 21, 144, 128, 203, 241, 21, 205, 209, 16, 138, 219, 155, 50, 48, 24, 209,
@@ -168,7 +168,7 @@ address == [
 ## In Rust 🤝
 
 ```rust
-use lunesrs::account::wallet::to_address;
+use lunesrs::wallet::assembly::to_address;
 
 let mainnet_id = 1;
 let version_address = 1;

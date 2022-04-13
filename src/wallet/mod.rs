@@ -1,7 +1,7 @@
 /// Sign and validate signatures
 pub mod signatures;
 /// Generate private and public keys
-pub mod wallet;
+pub mod assembly;
 
 pub const ADDRESS_VERSION: [u8; 2] = [1, 11];
 pub const ADDRESS_CHECKSUM_LENGTH: u8 = 4;
