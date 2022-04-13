@@ -1,9 +1,9 @@
 # LunesWeb
 
-📦 Rust lib ported via WebAssembly that works as a cryptographic base for [LunesJS](https://github.com/lunes-platform/lunesjs/)
+📦 Rust Lib ported via WebAssembly that works as a cryptographic bases for [LunesJS](https://github.com/lunes-platform/lunesjs/)
 
-[![Build](https://github.com/lunes-platform/lunesrs/actions/workflows/build.yml/badge.svg)](https://github.com/lunes-platform/lunesrs/actions/workflows/build.yml)
-[![Test](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml/badge.svg)](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml)
+[![Build](https://github.com/lunes-platform/lunesrs/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesrs/actions/workflows/build.yml)
+[![Test](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml)
 ![npm](https://img.shields.io/npm/v/lunesrs)
 
 ![docs.rs](https://img.shields.io/docsrs/lunesrs/1.8.1)
