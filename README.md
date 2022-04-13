@@ -1,4 +1,4 @@
-# LunesWeb
+# LunesRs
 
 📦 Rust Lib ported via WebAssembly that works as a cryptographic bases for [LunesJS](https://github.com/lunes-platform/lunesjs/)
 
