@@ -18,7 +18,7 @@
 //! ## 🔭 Telescope
 //!
 //! For the user guide and further documentation, please read
-//! [Telescope](https://lunes-platform/github.io/telescope)
+//! [Telescope](https://lunes-platform.github.io/telescope)
 //!
 //! ## 🏗 Archtecture
 //!
