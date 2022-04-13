@@ -10,7 +10,8 @@
     "bungcip.better-toml",
     "johnpapa.vscode-peacock",
     "serayuzgur.crates",
-    "vadimcn.vscode-lldb"
+    "vadimcn.vscode-lldb",
+    "rust-lang.rust"
   ],
   "postStartCommand": "cargo install wasm-pack"
 }

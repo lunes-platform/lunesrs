@@ -18,7 +18,7 @@
 //! ## 🔭 Telescope
 //!
 //! For the user guide and further documentation, please read
-//! [Telescope](https:blockchain.lunes.io/telescope)
+//! [Telescope](https://lunes-platform/github.io/telescope)
 //!
 //! ## 🏗 Archtecture
 //!
@@ -59,7 +59,7 @@
 //!
 
 /// Functions for wallets for Lunes Blockchain
-pub mod account;
+pub mod wallet;
 /// Utils functions
 pub mod utils;
 
