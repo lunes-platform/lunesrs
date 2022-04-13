@@ -6,7 +6,7 @@
 [![Test](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/lunes-platform/lunesrs/actions/workflows/test.yml)
 ![npm](https://img.shields.io/npm/v/lunesrs)
 
-![docs.rs](https://img.shields.io/docsrs/lunesrs/1.8.1)
+![docs.rs](https://img.shields.io/docsrs/lunesrs/1.9.0)
 
 ![npm](https://img.shields.io/npm/dm/lunesrs)
 ![GitHub last commit](https://img.shields.io/github/last-commit/lunes-platform/lunesrs)
