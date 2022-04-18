@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy Rust
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +15,8 @@ jobs:
     - name: Tests
       run: cargo build --release
 
-  Tests:
+  tests:
+    needs: [build]
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +24,8 @@ jobs:
     - name: Tests
       run: cargo test
 
-  Deploy:
+  deploy:
+    needs: [build, test]
     runs-on: ubuntu-latest
 
     steps:
